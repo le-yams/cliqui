@@ -2,6 +2,8 @@ package com.mytdev.cliqui;
 
 import com.mytdev.cliqui.beans.IntMinMaxConstraint;
 import com.mytdev.cliqui.beans.Option;
+import com.mytdev.cliqui.beans.PathSelectionMode;
+import com.mytdev.cliqui.beans.PathSelectionModeConstraint;
 import com.mytdev.cliqui.ui.BooleanOptionUIFactory;
 import com.mytdev.cliqui.ui.IntegerOptionUIFactory;
 import com.mytdev.cliqui.ui.spi.OptionUI;
@@ -161,7 +163,7 @@ public final class OptionsUI extends JPanel {
         }
 
         public Builder intOption(String name, int minValue, int maxValue) {
-            return addIntOption(name, null, null, new IntMinMaxConstraint(minValue, maxValue));
+            return intOption(name, null, null, minValue, maxValue);
         }
 
         public Builder intOption(String name, String label, String description) {
@@ -178,11 +180,23 @@ public final class OptionsUI extends JPanel {
         }
 
         public Builder pathOption(String name) {
-            return passwordOption(name, null, null);
+            return pathOption(name, null, null);
+        }
+
+        public Builder pathOption(String name, PathSelectionMode selectionMode) {
+            return pathOption(name, null, null, selectionMode);
         }
 
         public Builder pathOption(String name, String label, String description) {
-            this.options.add(new Option(name, Option.Type.PATH, label, description));
+            return addPathOption(name, label, description);
+        }
+
+        public Builder pathOption(String name, String label, String description, PathSelectionMode selectionMode) {
+            return addPathOption(name, label, description, new PathSelectionModeConstraint(selectionMode));
+        }
+
+        private Builder addPathOption(String name, String label, String description, Option.Constraint... constraints) {
+            this.options.add(new Option(name, Option.Type.PATH, label, description, constraints));
             return this;
         }
 

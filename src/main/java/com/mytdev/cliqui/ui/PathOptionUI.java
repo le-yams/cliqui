@@ -2,6 +2,7 @@ package com.mytdev.cliqui.ui;
 
 import com.mytdev.cliqui.ui.spi.AbstractOptionUI;
 import com.mytdev.cliqui.beans.Option;
+import com.mytdev.cliqui.beans.PathSelectionModeConstraint;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.nio.file.Paths;
@@ -34,7 +35,10 @@ public final class PathOptionUI extends AbstractOptionUI implements ActionListen
         field.setToolTipText(option.getDescription());
         browseButton.addActionListener(this);
         fileChooser.setMultiSelectionEnabled(false);
-        fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+        final PathSelectionModeConstraint selectionModeConstraint = option.getConstraint(PathSelectionModeConstraint.class);
+        fileChooser.setFileSelectionMode(selectionModeConstraint != null
+            ? selectionModeConstraint.getMode().getValue() 
+            : JFileChooser.FILES_AND_DIRECTORIES);
     }
 
     @Override
