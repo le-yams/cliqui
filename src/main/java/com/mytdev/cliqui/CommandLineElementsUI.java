@@ -15,6 +15,7 @@
  */
 package com.mytdev.cliqui;
 
+import com.mytdev.cliqui.ui.spi.CommandLineElementUIFactoryProvider;
 import com.mytdev.cliqui.beans.Argument;
 import com.mytdev.cliqui.beans.CommandLineElement;
 import com.mytdev.cliqui.ui.IntegerArgumentUIFactory;

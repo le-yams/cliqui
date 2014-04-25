@@ -16,11 +16,14 @@
 package com.mytdev.cliqui.ui;
 
 import com.mytdev.cliqui.beans.CommandLineElement;
+import com.mytdev.cliqui.beans.PathExistsConstraint;
+import com.mytdev.cliqui.beans.PathFileExtensionConstraint;
 import com.mytdev.cliqui.beans.PathSelectionMode;
 import com.mytdev.cliqui.beans.PathSelectionModeConstraint;
 import com.mytdev.cliqui.ui.spi.AbstractCommandLineElementUI;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.nio.file.Paths;
 import java.util.EnumMap;
 import java.util.Map;
@@ -28,7 +31,10 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  *
@@ -51,7 +57,9 @@ public abstract class AbstractPathUI<T extends CommandLineElement> extends Abstr
 
     protected final JButton browseButton = new JButton("Browse...");
 
-    protected final JFileChooser fileChooser = new JFileChooser();
+    protected final JFileChooser fileChooser;
+    
+    private final boolean pathMustExist;
 
     public AbstractPathUI(T commandLineElement) {
         super(commandLineElement);
@@ -59,31 +67,59 @@ public abstract class AbstractPathUI<T extends CommandLineElement> extends Abstr
         label.setToolTipText(commandLineElement.getDescription());
         field.setToolTipText(commandLineElement.getDescription());
         browseButton.addActionListener(this);
+        final PathExistsConstraint pathExistsConstraint = commandLineElement
+            .getConstraint(PathExistsConstraint.class);
+        pathMustExist = pathExistsConstraint != null 
+            ? pathExistsConstraint.isPathExistsMandatory() 
+            : false;
+        field.setEditable(pathMustExist == false);
+        fileChooser = new JFileChooser() {
+
+            @Override
+            public void approveSelection() {
+                final File file = getSelectedFile();
+                if(pathMustExist && file.exists() == false) {
+                    JOptionPane.showMessageDialog(
+                        fileChooser, 
+                        "the selected path does not denote an existing file or directory: " + file.toPath(), 
+                        "file or directory must exist", 
+                        JOptionPane.ERROR_MESSAGE);
+                } else {
+                    super.approveSelection();
+                }
+            }
+            
+        };
+        
         fileChooser.setMultiSelectionEnabled(false);
-        final PathSelectionModeConstraint selectionModeConstraint = commandLineElement.getConstraint(PathSelectionModeConstraint.class);
+        final PathSelectionModeConstraint selectionModeConstraint = commandLineElement
+            .getConstraint(PathSelectionModeConstraint.class);
         fileChooser.setFileSelectionMode(selectionModeConstraint != null
             ? SELECTION_MODES.get(selectionModeConstraint.getMode())
             : JFileChooser.FILES_AND_DIRECTORIES);
+        final PathFileExtensionConstraint extensionConstraint = commandLineElement
+            .getConstraint(PathFileExtensionConstraint.class);
+        if(extensionConstraint != null) {
+            final FileFilter extensionFileFilter = new FileNameExtensionFilter(
+                extensionConstraint.getDescription(), 
+                extensionConstraint.getExtensions());
+            fileChooser.setFileFilter(extensionFileFilter);
+            fileChooser.setAcceptAllFileFilterUsed(extensionConstraint.isStrict() == false);
+        }
+        
     }
 
     @Override
     public final void actionPerformed(ActionEvent e) {
         fileChooser.setSelectedFile(Paths.get(field.getText()).toFile());
         if (fileChooser.showDialog(browseButton, "Select") == JFileChooser.APPROVE_OPTION) {
-            field.setText(fileChooser.getSelectedFile().toPath().toString());
+            final File file = fileChooser.getSelectedFile();
+            if(pathMustExist && file.exists() == false) {
+            } else {
+                field.setText(file.toPath().toString());
+            }
         }
     }
-
-//    @Override
-//    public List<String> getCommandLineValue() {
-//        final List<String> cli = new ArrayList<>();
-//        final String path = field.getText();
-//        if (path.isEmpty() == false) {
-//            cli.add(getOption().getName());
-//            cli.add(path);
-//        }
-//        return cli;
-//    }
 
     @Override
     public final JComponent getLabelComponent() {

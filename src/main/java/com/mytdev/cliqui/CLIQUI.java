@@ -15,9 +15,13 @@
  */
 package com.mytdev.cliqui;
 
+import com.mytdev.cliqui.ui.spi.ArgumentUIFactoryProvider;
+import com.mytdev.cliqui.ui.spi.OptionUIFactoryProvider;
 import com.mytdev.cliqui.beans.Argument;
 import com.mytdev.cliqui.beans.IntMinMaxConstraint;
 import com.mytdev.cliqui.beans.Option;
+import com.mytdev.cliqui.beans.PathExistsConstraint;
+import com.mytdev.cliqui.beans.PathFileExtensionConstraint;
 import com.mytdev.cliqui.beans.PathSelectionMode;
 import com.mytdev.cliqui.beans.PathSelectionModeConstraint;
 import java.util.ArrayList;
@@ -177,19 +181,67 @@ public final class CLIQUI {
         }
 
         public Builder pathArg(String name) {
-            return pathArg(name, null, null);
+            return addPathArg(name, null, null);
+        }
+
+        public Builder pathArg(String name, PathFileExtensionConstraint extensionConstraint) {
+            return pathArg(name, null, null, extensionConstraint);
+        }
+
+        public Builder pathArg(String name, boolean mustExist) {
+            return pathArg(name, null, null, mustExist);
+        }
+
+        public Builder pathArg(String name, boolean mustExist, PathFileExtensionConstraint extensionConstraint) {
+            return pathArg(name, null, null, mustExist, extensionConstraint);
         }
 
         public Builder pathArg(String name, PathSelectionMode selectionMode) {
             return pathArg(name, null, null, selectionMode);
         }
 
+        public Builder pathArg(String name, PathSelectionMode selectionMode, PathFileExtensionConstraint extensionConstraint) {
+            return pathArg(name, null, null, selectionMode, extensionConstraint);
+        }
+
+        public Builder pathArg(String name, PathSelectionMode selectionMode, boolean mustExist) {
+            return pathArg(name, null, null, selectionMode, mustExist);
+        }
+
+        public Builder pathArg(String name, PathSelectionMode selectionMode, boolean mustExist, PathFileExtensionConstraint extensionConstraint) {
+            return pathArg(name, null, null, selectionMode, mustExist, extensionConstraint);
+        }
+
         public Builder pathArg(String name, String label, String description) {
             return addPathArg(name, label, description);
         }
 
+        public Builder pathArg(String name, String label, String description, PathFileExtensionConstraint extensionConstraint) {
+            return addPathArg(name, label, description, extensionConstraint);
+        }
+
+        public Builder pathArg(String name, String label, String description, boolean mustExist) {
+            return addPathArg(name, label, description, new PathExistsConstraint(mustExist));
+        }
+
+        public Builder pathArg(String name, String label, String description, boolean mustExist, PathFileExtensionConstraint extensionConstraint) {
+            return addPathArg(name, label, description, new PathExistsConstraint(mustExist), extensionConstraint);
+        }
+
         public Builder pathArg(String name, String label, String description, PathSelectionMode selectionMode) {
             return addPathArg(name, label, description, new PathSelectionModeConstraint(selectionMode));
+        }
+
+        public Builder pathArg(String name, String label, String description, PathSelectionMode selectionMode, PathFileExtensionConstraint extensionConstraint) {
+            return addPathArg(name, label, description, new PathSelectionModeConstraint(selectionMode), extensionConstraint);
+        }
+
+        public Builder pathArg(String name, String label, String description, PathSelectionMode selectionMode, boolean mustExist) {
+            return addPathArg(name, label, description, new PathSelectionModeConstraint(selectionMode), new PathExistsConstraint(mustExist));
+        }
+
+        public Builder pathArg(String name, String label, String description, PathSelectionMode selectionMode, boolean mustExist, PathFileExtensionConstraint extensionConstraint) {
+            return addPathArg(name, label, description, new PathSelectionModeConstraint(selectionMode), new PathExistsConstraint(mustExist), extensionConstraint);
         }
 
         private Builder addPathArg(String name, String label, String description, Object... constraints) {
