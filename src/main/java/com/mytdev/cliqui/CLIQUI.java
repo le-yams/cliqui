@@ -125,8 +125,13 @@ public final class CLIQUI {
             return this;
         }
 
-        public Builder pathArg(String name) {
-            return pathArg(name, null, null);
+        public Builder textListArg(String name) {
+            return textListArg(name, null, null);
+        }
+
+        public Builder textListArg(String name, String label, String description) {
+            this.arguments.add(new Argument(name, Argument.Type.TEXT_LIST, label, description));
+            return this;
         }
 
         public Builder intArg(String name) {
@@ -150,6 +155,31 @@ public final class CLIQUI {
             return this;
         }
 
+        public Builder intListArg(String name) {
+            return intListArg(name, null, null);
+        }
+
+        public Builder intListArg(String name, int minValue, int maxValue) {
+            return intListArg(name, null, null, minValue, maxValue);
+        }
+
+        public Builder intListArg(String name, String label, String description) {
+            return addIntListArg(name, label, description);
+        }
+
+        public Builder intListArg(String name, String label, String description, int minValue, int maxValue) {
+            return addIntListArg(name, label, description, new IntMinMaxConstraint(minValue, maxValue));
+        }
+
+        private Builder addIntListArg(String name, String label, String description, Object... constraints) {
+            this.arguments.add(new Argument(name, Argument.Type.INTEGER_LIST, label, description, constraints));
+            return this;
+        }
+
+        public Builder pathArg(String name) {
+            return pathArg(name, null, null);
+        }
+
         public Builder pathArg(String name, PathSelectionMode selectionMode) {
             return pathArg(name, null, null, selectionMode);
         }
@@ -164,6 +194,27 @@ public final class CLIQUI {
 
         private Builder addPathArg(String name, String label, String description, Object... constraints) {
             this.arguments.add(new Argument(name, Argument.Type.PATH, label, description, constraints));
+            return this;
+        }
+
+        public Builder pathListArg(String name) {
+            return pathListArg(name, null, null);
+        }
+
+        public Builder pathListArg(String name, PathSelectionMode selectionMode) {
+            return pathListArg(name, null, null, selectionMode);
+        }
+
+        public Builder pathListArg(String name, String label, String description) {
+            return addPathListArg(name, label, description);
+        }
+
+        public Builder pathListArg(String name, String label, String description, PathSelectionMode selectionMode) {
+            return addPathListArg(name, label, description, new PathSelectionModeConstraint(selectionMode));
+        }
+
+        private Builder addPathListArg(String name, String label, String description, Object... constraints) {
+            this.arguments.add(new Argument(name, Argument.Type.PATH_LIST, label, description, constraints));
             return this;
         }
 

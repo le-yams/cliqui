@@ -17,8 +17,11 @@ package com.mytdev.cliqui;
 
 import com.mytdev.cliqui.beans.Argument;
 import com.mytdev.cliqui.ui.IntegerArgumentUIFactory;
+import com.mytdev.cliqui.ui.IntegerListArgumentUIFactory;
 import com.mytdev.cliqui.ui.PathArgumentUIFactory;
+import com.mytdev.cliqui.ui.PathListArgumentUIFactory;
 import com.mytdev.cliqui.ui.TextArgumentUIFactory;
+import com.mytdev.cliqui.ui.TextListArgumentUIFactory;
 import com.mytdev.cliqui.ui.spi.CommandLineElementUIFactory;
 import java.util.EnumMap;
 import java.util.Map;
@@ -33,8 +36,11 @@ public final class ArgumentUIFactoryProvider implements CommandLineElementUIFact
 
     static {
         ARGUMENT_UI_FACTORIES.put(Argument.Type.PATH, new PathArgumentUIFactory());
+        ARGUMENT_UI_FACTORIES.put(Argument.Type.PATH_LIST, new PathListArgumentUIFactory());
         ARGUMENT_UI_FACTORIES.put(Argument.Type.TEXT, new TextArgumentUIFactory());
+        ARGUMENT_UI_FACTORIES.put(Argument.Type.TEXT_LIST, new TextListArgumentUIFactory());
         ARGUMENT_UI_FACTORIES.put(Argument.Type.INTEGER, new IntegerArgumentUIFactory());
+        ARGUMENT_UI_FACTORIES.put(Argument.Type.INTEGER_LIST, new IntegerListArgumentUIFactory());
     }
 
     @Override

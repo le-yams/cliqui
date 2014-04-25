@@ -40,7 +40,7 @@ import javax.swing.SwingConstants;
  * @author Yann D'Isanto
  * @param <T>
  */
-public final class CommandLineElementsUI<T extends CommandLineElement> extends JPanel {
+public final class CommandLineElementsUI<T extends CommandLineElement> {
 
     private static final Map<Argument.Type, CommandLineElementUIFactory<Argument>> ARGUMENT_UI_FACTORIES = new EnumMap<>(Argument.Type.class);
 
@@ -55,6 +55,8 @@ public final class CommandLineElementsUI<T extends CommandLineElement> extends J
     private final List<T> commandLineElements;
 
     private final Map<T, CommandLineElementUI<T>> uis;
+    
+    private final JPanel panel = new JPanel();
 
     
     public CommandLineElementsUI(CommandLineElementUIFactoryProvider<T> factoryProvider, List<T> commandLineElements) {
@@ -66,7 +68,7 @@ public final class CommandLineElementsUI<T extends CommandLineElement> extends J
                 uis.put(commandLineElement, buildCommandLineElementUI(commandLineElement));
             }
         }
-        initialize();
+        initializePanel();
     }
 
     public List<String> getCommandLineValue() {
@@ -81,12 +83,16 @@ public final class CommandLineElementsUI<T extends CommandLineElement> extends J
         return Collections.unmodifiableCollection(commandLineElements);
     }
     
-    private void initialize() {
+    public JPanel getPanel() {
+        return panel;
+    }
+    
+    private void initializePanel() {
         if(commandLineElements.isEmpty()) {
             return;
         }
-        final GroupLayout layout = new GroupLayout(this);
-        setLayout(layout);
+        final GroupLayout layout = new GroupLayout(panel);
+        panel.setLayout(layout);
 
         final GroupLayout.ParallelGroup hGroup = layout.createParallelGroup(GroupLayout.Alignment.LEADING);
         final List<Component> labels = new ArrayList<>();
@@ -118,9 +124,9 @@ public final class CommandLineElementsUI<T extends CommandLineElement> extends J
             }
         }
         layout.setHorizontalGroup(hGroup);
-
-        layout.linkSize(SwingConstants.HORIZONTAL, labels.toArray(new Component[labels.size()]));
-
+        if(labels.isEmpty() == false) {
+            layout.linkSize(SwingConstants.HORIZONTAL, labels.toArray(new Component[labels.size()]));
+        }
         final GroupLayout.SequentialGroup vGroup = layout.createSequentialGroup();
         for (T commandLineElement : commandLineElements) {
             final CommandLineElementUI<T> paramUI = uis.get(commandLineElement);
