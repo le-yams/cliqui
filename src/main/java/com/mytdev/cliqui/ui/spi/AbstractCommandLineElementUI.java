@@ -13,34 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mytdev.cliqui.beans;
+package com.mytdev.cliqui.ui.spi;
 
+import com.mytdev.cliqui.beans.CommandLineElement;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NonNull;
 
 /**
  *
  * @author Yann D'Isanto
+ * @param <T>
  */
-@Getter
-public final class Argument extends CommandLineElement {
+@AllArgsConstructor
+public abstract class AbstractCommandLineElementUI<T extends CommandLineElement> implements CommandLineElementUI {
 
-    @NonNull
-    private final Type type;
-    
-    public Argument(String name, Type type, String label, String description, Object... constraints) {
-        super(name, label, description, constraints);
-        this.type = type;
-    }
+    @Getter
+    private final T commandLineElement;
 
-    public static enum Type {
-
-        TEXT,
-        TEXT_LIST,
-        INTEGER,
-        INTEGER_LIST,
-        PATH,
-        PATH_LIST
-
-    }
 }

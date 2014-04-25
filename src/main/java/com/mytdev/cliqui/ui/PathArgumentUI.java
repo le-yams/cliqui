@@ -13,34 +13,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mytdev.cliqui.beans;
+package com.mytdev.cliqui.ui;
 
-import lombok.Getter;
-import lombok.NonNull;
+import com.mytdev.cliqui.beans.Argument;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
  * @author Yann D'Isanto
  */
-@Getter
-public final class Argument extends CommandLineElement {
+public final class PathArgumentUI extends AbstractPathUI<Argument> {
 
-    @NonNull
-    private final Type type;
-    
-    public Argument(String name, Type type, String label, String description, Object... constraints) {
-        super(name, label, description, constraints);
-        this.type = type;
+    public PathArgumentUI(Argument argument) {
+        super(argument);
     }
 
-    public static enum Type {
-
-        TEXT,
-        TEXT_LIST,
-        INTEGER,
-        INTEGER_LIST,
-        PATH,
-        PATH_LIST
-
+    @Override
+    public List<String> getCommandLineValue() {
+        final List<String> cli = new ArrayList<>();
+        final String path = field.getText();
+        if (path.isEmpty() == false) {
+            cli.add(path);
+        }
+        return cli;
     }
 }

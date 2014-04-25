@@ -15,18 +15,32 @@
  */
 package com.mytdev.cliqui.ui;
 
-import com.mytdev.cliqui.beans.Option;
-import com.mytdev.cliqui.ui.spi.CommandLineElementUI;
-import com.mytdev.cliqui.ui.spi.CommandLineElementUIFactory;
+import com.mytdev.cliqui.beans.Argument;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.text.DocumentFilter;
 
 /**
  *
  * @author Yann D'Isanto
  */
-public class BooleanOptionUIFactory implements CommandLineElementUIFactory<Option> {
+public final class TextArgumentUI extends AbstractTextUI<Argument> {
+
+    public TextArgumentUI(Argument argument) {
+        super(argument);
+    }
+
+    public TextArgumentUI(Argument argument, DocumentFilter documentFilter) {
+        super(argument, documentFilter);
+    }
 
     @Override
-    public CommandLineElementUI<Option> createUI(Option option) {
-        return new BooleanOptionUI(option);
+    public List<String> getCommandLineValue() {
+        final List<String> cli = new ArrayList<>();
+        final String value = field.getText();
+        if(value.isEmpty() == false) {
+            cli.add(value);
+        }
+        return cli;
     }
 }

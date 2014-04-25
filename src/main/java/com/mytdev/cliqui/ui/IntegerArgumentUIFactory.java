@@ -15,18 +15,25 @@
  */
 package com.mytdev.cliqui.ui;
 
-import com.mytdev.cliqui.beans.Option;
+import com.mytdev.cliqui.beans.Argument;
+import com.mytdev.cliqui.beans.IntMinMaxConstraint;
 import com.mytdev.cliqui.ui.spi.CommandLineElementUI;
 import com.mytdev.cliqui.ui.spi.CommandLineElementUIFactory;
+import com.mytdev.cliqui.util.IntegerDocumentFilter;
+import javax.swing.text.DocumentFilter;
 
 /**
  *
  * @author Yann D'Isanto
  */
-public class BooleanOptionUIFactory implements CommandLineElementUIFactory<Option> {
+public final class IntegerArgumentUIFactory implements CommandLineElementUIFactory<Argument> {
 
     @Override
-    public CommandLineElementUI<Option> createUI(Option option) {
-        return new BooleanOptionUI(option);
+    public CommandLineElementUI<Argument> createUI(Argument argument) {
+        final IntMinMaxConstraint constraint = argument.getConstraint(IntMinMaxConstraint.class);
+        final DocumentFilter documentFilter = constraint != null
+            ? new IntegerDocumentFilter(constraint.getMin(), constraint.getMax())
+            : new IntegerDocumentFilter();
+        return new TextArgumentUI(argument, documentFilter);
     }
 }

@@ -13,20 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mytdev.cliqui.ui;
+package com.mytdev.cliqui;
 
-import com.mytdev.cliqui.beans.Option;
-import com.mytdev.cliqui.ui.spi.CommandLineElementUI;
+import com.mytdev.cliqui.beans.CommandLineElement;
 import com.mytdev.cliqui.ui.spi.CommandLineElementUIFactory;
 
 /**
  *
  * @author Yann D'Isanto
+ * @param <T> the command line element type
  */
-public class BooleanOptionUIFactory implements CommandLineElementUIFactory<Option> {
+public interface CommandLineElementUIFactoryProvider<T extends CommandLineElement> {
 
-    @Override
-    public CommandLineElementUI<Option> createUI(Option option) {
-        return new BooleanOptionUI(option);
-    }
+    /**
+     * Returns the ui factory for the given command line element.
+     *
+     * @param commandLineElement
+     * @return a CommandLineElementUIFactory instance
+     * @throws UnsupportedOperationException if the specified command line
+     * element is not supported.
+     */
+    CommandLineElementUIFactory<T> getUIFactory(T commandLineElement) throws UnsupportedOperationException;
 }

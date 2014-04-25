@@ -1,7 +1,20 @@
+/*
+ * Copyright 2014 Yann D'Isanto.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.mytdev.cliqui.beans;
 
-import java.util.HashMap;
-import java.util.Map;
 import lombok.Getter;
 import lombok.NonNull;
 
@@ -14,27 +27,16 @@ public final class Option extends CommandLineElement {
 
     @NonNull
     private final Type type;
-    
-    private final Map<Class<? extends Constraint>, Constraint> constraints = new HashMap<>();
-    
-    public Option(String name, Type type, String label, String description, Constraint... constraints) {
-        super(name, label, description);
+
+    public Option(String name, Type type, String label, String description, Object... constraints) {
+        super(name, label, description, constraints);
         this.type = type;
-        for (Constraint constraint : constraints) {
-            this.constraints.put(constraint.getClass(), constraint);
-        }
     }
-    
-    @SuppressWarnings("unchecked")
-    public <C extends Constraint> C getConstraint(Class<C> contraint) {
-        return (C) constraints.get(contraint);
-    }
-    
+
     public static enum Type {
+
         FLAG, TEXT, INTEGER, PATH, PASSWORD
+
     }
-    
-    public static interface Constraint {
-        
-    }
+
 }

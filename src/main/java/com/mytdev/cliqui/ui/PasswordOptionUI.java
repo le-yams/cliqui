@@ -1,7 +1,22 @@
+/*
+ * Copyright 2014 Yann D'Isanto.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.mytdev.cliqui.ui;
 
-import com.mytdev.cliqui.ui.spi.AbstractOptionUI;
-import com.mytdev.cliqui.beans.Option;
+import com.mytdev.cliqui.beans.CommandLineElement;
+import com.mytdev.cliqui.ui.spi.AbstractCommandLineElementUI;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -14,8 +29,9 @@ import javax.swing.JPasswordField;
 /**
  *
  * @author Yann D'Isanto
+ * @param <T>
  */
-public final class PasswordOptionUI extends AbstractOptionUI implements ActionListener {
+public final class PasswordOptionUI <T extends CommandLineElement> extends AbstractCommandLineElementUI<T> implements ActionListener {
 
     private final JLabel label = new JLabel();
 
@@ -25,11 +41,11 @@ public final class PasswordOptionUI extends AbstractOptionUI implements ActionLi
     
     private final char defaultPasswordEchoChar;
 
-    public PasswordOptionUI(Option option) {
-        super(option);
-        label.setText(option.getLabel());
-        label.setToolTipText(option.getDescription());
-        field.setToolTipText(option.getDescription());
+    public PasswordOptionUI(T commandLineElement) {
+        super(commandLineElement);
+        label.setText(commandLineElement.getLabel());
+        label.setToolTipText(commandLineElement.getDescription());
+        field.setToolTipText(commandLineElement.getDescription());
         defaultPasswordEchoChar = field.getEchoChar();
         displayPasswordCheckBox.addActionListener(this);
     }
@@ -46,13 +62,13 @@ public final class PasswordOptionUI extends AbstractOptionUI implements ActionLi
     public List<String> getCommandLineValue() {
         final List<String> cli = new ArrayList<>();
         final char[] password = field.getPassword();
-        if(password.length > 0) {
-            cli.add(getOption().getName());
+        if (password.length > 0) {
+            cli.add(getCommandLineElement().getName());
             cli.add(new String(password));
         }
         return cli;
     }
-
+    
     @Override
     public JComponent getLabelComponent() {
         return label;
