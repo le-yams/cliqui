@@ -16,9 +16,9 @@
 package com.mytdev.cliqui;
 
 import com.mytdev.cliqui.beans.CommandLineElement;
+import com.mytdev.cliqui.spi.AbstractCommandLineElementsUI;
 import com.mytdev.cliqui.spi.CommandLineElementUI;
 import com.mytdev.cliqui.spi.CommandLineElementUIFactoryProvider;
-import com.mytdev.cliqui.spi.CommandLineElementsUI;
 import java.awt.Component;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +33,7 @@ import javax.swing.SwingConstants;
  * @author Yann D'Isanto
  * @param <T>
  */
-public final class SwingCommandLineElementsUI<T extends CommandLineElement> extends CommandLineElementsUI<T, JPanel> {
+public final class SwingCommandLineElementsUI<T extends CommandLineElement> extends AbstractCommandLineElementsUI<T, JPanel> {
 
     private final JPanel panel = new JPanel();
 
