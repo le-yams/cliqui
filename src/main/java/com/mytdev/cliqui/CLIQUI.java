@@ -25,8 +25,10 @@ import com.mytdev.cliqui.beans.PathExistsConstraint;
 import com.mytdev.cliqui.beans.PathFileExtensionConstraint;
 import com.mytdev.cliqui.beans.PathSelectionMode;
 import com.mytdev.cliqui.beans.PathSelectionModeConstraint;
+import com.mytdev.cliqui.spi.CommandLineElementsUI;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JPanel;
 import lombok.Getter;
 
 /**
@@ -36,10 +38,10 @@ import lombok.Getter;
 public final class CLIQUI {
 
     @Getter
-    private final SwingCommandLineElementsUI<Option> optionsUI;
+    private final CommandLineElementsUI<Option, JPanel> optionsUI;
 
     @Getter
-    private final SwingCommandLineElementsUI<Argument> argumentsUI;
+    private final CommandLineElementsUI<Argument, JPanel> argumentsUI;
 
     public CLIQUI(List<Option> options, List<Argument> arguments) {
         this.optionsUI = new SwingCommandLineElementsUI<>(new OptionUIFactoryProvider(), options);
