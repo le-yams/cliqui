@@ -15,8 +15,8 @@
  */
 package com.mytdev.cliqui;
 
-import com.mytdev.cliqui.ui.spi.ArgumentUIFactoryProvider;
-import com.mytdev.cliqui.ui.spi.OptionUIFactoryProvider;
+import com.mytdev.cliqui.spi.ArgumentUIFactoryProvider;
+import com.mytdev.cliqui.spi.OptionUIFactoryProvider;
 import com.mytdev.cliqui.beans.Argument;
 import com.mytdev.cliqui.beans.MaxConstraint;
 import com.mytdev.cliqui.beans.MinConstraint;
@@ -36,14 +36,14 @@ import lombok.Getter;
 public final class CLIQUI {
 
     @Getter
-    private final CommandLineElementsUI<Option> optionsUI;
+    private final SwingCommandLineElementsUI<Option> optionsUI;
 
     @Getter
-    private final CommandLineElementsUI<Argument> argumentsUI;
+    private final SwingCommandLineElementsUI<Argument> argumentsUI;
 
     public CLIQUI(List<Option> options, List<Argument> arguments) {
-        this.optionsUI = new CommandLineElementsUI<>(new OptionUIFactoryProvider(), options);
-        this.argumentsUI = new CommandLineElementsUI<>(new ArgumentUIFactoryProvider(), arguments);
+        this.optionsUI = new SwingCommandLineElementsUI<>(new OptionUIFactoryProvider(), options);
+        this.argumentsUI = new SwingCommandLineElementsUI<>(new ArgumentUIFactoryProvider(), arguments);
     }
 
     private static Option.Builder option(String name, Option.Type type) {
