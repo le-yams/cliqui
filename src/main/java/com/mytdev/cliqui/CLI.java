@@ -41,7 +41,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
- *
+ * 
  * @author Yann D'Isanto
  */
 @AllArgsConstructor
@@ -169,86 +169,220 @@ public final class CLI {
         }
     }
 
+    /* shortcut to create an option builder instance */
     private static Option.Builder option(String name, Option.Type type) {
         return new Option.Builder(name, type);
     }
 
+    /**
+     * Creates a Option.Builder instance with the given name and the FLAG type.
+     *
+     * @param name the option name
+     * @return a Option.Builder instance
+     */
     public static Option.Builder flagOption(String name) {
         return option(name, Option.Type.FLAG);
     }
 
+    /**
+     * Creates a Option.Builder instance with the given name and the INTEGER
+     * type.
+     *
+     * @param name the option name
+     * @return a Option.Builder instance
+     */
     public static Option.Builder intOption(String name) {
         return option(name, Option.Type.INTEGER);
     }
 
+    /**
+     * Creates a Option.Builder instance with the given name and the PASSWORD
+     * type.
+     *
+     * @param name the option name
+     * @return a Option.Builder instance
+     */
     public static Option.Builder passwordOption(String name) {
         return option(name, Option.Type.PASSWORD);
     }
 
+    /**
+     * Creates a Option.Builder instance with the given name and the PATH type.
+     *
+     * @param name the option name
+     * @return a Option.Builder instance
+     */
     public static Option.Builder pathOption(String name) {
         return option(name, Option.Type.PATH);
     }
 
+    /**
+     * Creates a Option.Builder instance with the given name and the TEXT type.
+     *
+     * @param name the option name
+     * @return a Option.Builder instance
+     */
     public static Option.Builder textOption(String name) {
         return option(name, Option.Type.TEXT);
     }
 
+    /* shortcut to create an argument builder instance */
     private static Argument.Builder arg(String name, Argument.Type type) {
         return new Argument.Builder(name, type);
     }
 
+    /**
+     * Creates a Argument.Builder instance with the given name and the PATH
+     * type.
+     *
+     * @param name the argument name
+     * @return a Argument.Builder instance
+     */
     public static Argument.Builder pathArg(String name) {
         return arg(name, Argument.Type.PATH);
     }
 
+    /**
+     * Creates a Argument.Builder instance with the given name and the PATH_LIST
+     * type.
+     *
+     * @param name the argument name
+     * @return a Argument.Builder instance
+     */
     public static Argument.Builder pathListArg(String name) {
         return arg(name, Argument.Type.PATH_LIST);
     }
 
+    /**
+     * Creates a Argument.Builder instance with the given name and the TEXT
+     * type.
+     *
+     * @param name the argument name
+     * @return a Argument.Builder instance
+     */
     public static Argument.Builder textArg(String name) {
         return arg(name, Argument.Type.TEXT);
     }
 
+    /**
+     * Creates a Argument.Builder instance with the given name and the TEXT_LIST
+     * type.
+     *
+     * @param name the argument name
+     * @return a Argument.Builder instance
+     */
     public static Argument.Builder textListArg(String name) {
         return arg(name, Argument.Type.TEXT_LIST);
     }
 
+    /**
+     * Creates a Argument.Builder instance with the given name and the INTEGER
+     * type.
+     *
+     * @param name the argument name
+     * @return a Argument.Builder instance
+     */
     public static Argument.Builder intArg(String name) {
         return arg(name, Argument.Type.INTEGER);
     }
 
+    /**
+     * Creates a Argument.Builder instance with the given name and the
+     * INTEGER_LIST type.
+     *
+     * @param name the argument name
+     * @return a Argument.Builder instance
+     */
     public static Argument.Builder intListArg(String name) {
         return arg(name, Argument.Type.INTEGER_LIST);
     }
 
+    /**
+     * Creates then returns a constraint with the given integer minimum value.
+     *
+     * @param min the minimum value
+     * @return a Constraint instance
+     */
     public static Constraint min(int min) {
         return new IntMinConstraint(min);
     }
 
+    /**
+     * Creates then returns a constraint with the given integer maximum value.
+     *
+     * @param max the maximum value
+     * @return a Constraint instance
+     */
     public static Constraint max(int max) {
         return new IntMaxConstraint(max);
     }
 
+    /**
+     * Creates then returns a constraint with the given path selection mode.
+     *
+     * @param selectionMode path selection mode
+     * @return a Constraint instance
+     */
     public static Constraint pathSelectionMode(PathSelectionMode selectionMode) {
         return new PathSelectionModeConstraint(selectionMode);
     }
 
+    /**
+     * Creates then returns a constraint with a {@code true } path must exist
+     * flag.
+     *
+     * @return a Constraint instance
+     */
     public static Constraint pathMustExist() {
         return pathMustExist(true);
     }
 
+    /**
+     * Creates then returns a constraint with the given path must exist flag
+     * value.
+     *
+     * @param mustExist path must exist flag
+     * @return a Constraint instance
+     */
     public static Constraint pathMustExist(boolean mustExist) {
         return new PathExistsConstraint(mustExist);
     }
 
+    /**
+     * Creates then returns a constraint with the given file extensions, no
+     * description and a {@code true } strict flag.
+     *
+     * @param extensions the extensions
+     * @return a Constraint instance
+     */
     public static Constraint fileExtensions(String... extensions) {
         return fileExtensions(null, true, extensions);
     }
 
+    /**
+     * Creates then returns a constraint with the given file extensions, no
+     * description and the given strict flag.
+     *
+     * @param strict if {@code true } only files with given extension will be
+     * accepted. If {@code false } other extensions are accepted.
+     * @param extensions the extensions
+     * @return a Constraint instance
+     */
     public static Constraint fileExtensions(boolean strict, String... extensions) {
         return fileExtensions(null, strict, extensions);
     }
 
+    /**
+     * Creates then returns a constraint with the given file extensions, no
+     * description and the given strict flag.
+     *
+     * @param description this constraint description
+     * @param strict if {@code true } only files with given extension will be
+     * accepted. If {@code false } default UI file filter display only files
+     * with the given extensions but other extensions are accepted.
+     * @param extensions the extensions
+     * @return a Constraint instance
+     */
     public static Constraint fileExtensions(String description, boolean strict, String... extensions) {
         return new PathFileExtensionConstraint(description, strict, extensions);
     }
