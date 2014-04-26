@@ -15,151 +15,32 @@
  */
 package com.mytdev.cliqui;
 
-import com.mytdev.cliqui.beans.Argument;
-import com.mytdev.cliqui.beans.MaxConstraint;
-import com.mytdev.cliqui.beans.MinConstraint;
-import com.mytdev.cliqui.beans.Option;
-import com.mytdev.cliqui.beans.PathExistsConstraint;
-import com.mytdev.cliqui.beans.PathFileExtensionConstraint;
-import com.mytdev.cliqui.beans.PathSelectionMode;
-import com.mytdev.cliqui.beans.PathSelectionModeConstraint;
+import com.mytdev.cliqui.swing.SwingCLIQUIServiceProvider;
+import com.mytdev.cliqui.cli.Argument;
+import com.mytdev.cliqui.cli.Option;
 import com.mytdev.cliqui.spi.CLIQUIServiceProvider;
 import com.mytdev.cliqui.spi.CommandLineElementsUI;
-import java.util.ArrayList;
-import java.util.List;
+import javax.swing.JPanel;
 import lombok.Getter;
 
 /**
  *
  * @author Yann D'Isanto
+ * @param <P> command line elements UI panel type
  */
+@Getter
 public final class CLIQUI<P> {
 
-    @Getter
     private final CommandLineElementsUI<Option, P> optionsUI;
 
-    @Getter
     private final CommandLineElementsUI<Argument, P> argumentsUI;
 
-    public CLIQUI(CLIQUIServiceProvider<P> serviceProvider, List<Option> options, List<Argument> arguments) {
-        this.optionsUI = serviceProvider.getOptionsUIFactory().createUI(options);
-        this.argumentsUI = serviceProvider.getArgumentsUIFactory().createUI(arguments);
-    }
-
-    private static Option.Builder option(String name, Option.Type type) {
-        return new Option.Builder(name, type);
-    }
-
-    public static Option.Builder flagOption(String name) {
-        return option(name, Option.Type.FLAG);
-    }
-
-    public static Option.Builder intOption(String name) {
-        return option(name, Option.Type.INTEGER);
-    }
-
-    public static Option.Builder passwordOption(String name) {
-        return option(name, Option.Type.PASSWORD);
-    }
-
-    public static Option.Builder pathOption(String name) {
-        return option(name, Option.Type.PATH);
-    }
-
-    public static Option.Builder textOption(String name) {
-        return option(name, Option.Type.TEXT);
-    }
-
-    private static Argument.Builder arg(String name, Argument.Type type) {
-        return new Argument.Builder(name, type);
+    public CLIQUI(CLIQUIServiceProvider<P> serviceProvider, CLI cli) {
+        this.optionsUI = serviceProvider.getOptionsUIFactory().createUI(cli.getOptions());
+        this.argumentsUI = serviceProvider.getArgumentsUIFactory().createUI(cli.getArguments());
     }
     
-    public static Argument.Builder pathArg(String name) {
-        return arg(name, Argument.Type.PATH);
-    }
-
-    public static Argument.Builder pathListArg(String name) {
-        return arg(name, Argument.Type.PATH_LIST);
-    }
-
-    public static Argument.Builder textArg(String name) {
-        return arg(name, Argument.Type.TEXT);
-    }
-
-    public static Argument.Builder textListArg(String name) {
-        return arg(name, Argument.Type.TEXT_LIST);
-    }
-
-    public static Argument.Builder intArg(String name) {
-        return arg(name, Argument.Type.INTEGER);
-    }
-
-    public static Argument.Builder intListArg(String name) {
-        return arg(name, Argument.Type.INTEGER_LIST);
-    }
-
-    public static Object min(int min) {
-        return new MinConstraint(min);
-    }
-
-    public static Object max(int max) {
-        return new MaxConstraint(max);
-    }
-
-    public static Object pathSelectionMode(PathSelectionMode selectionMode) {
-        return new PathSelectionModeConstraint(selectionMode);
-    }
-
-    public static Object pathMustExist() {
-        return pathMustExist(true);
-    }
-
-    public static Object pathMustExist(boolean mustExist) {
-        return new PathExistsConstraint(mustExist);
-    }
-
-    public static Object fileExtensions(String... extensions) {
-        return fileExtensions(null, true, extensions);
-    }
-
-    public static Object fileExtensions(boolean strict, String... extensions) {
-        return fileExtensions(null, strict, extensions);
-    }
-
-    public static Object fileExtensions(String description, boolean strict, String... extensions) {
-        return new PathFileExtensionConstraint(description, strict, extensions);
-    }
-
-    public static final class Builder<P> {
-
-        private final CLIQUIServiceProvider<P> serviceProvider;
-        
-        private final List<Option> options = new ArrayList<>();
-
-        private final List<Argument> arguments = new ArrayList<>();
-
-        public Builder(CLIQUIServiceProvider<P> serviceProvider) {
-            this.serviceProvider = serviceProvider;
-        }
-
-        
-        public Builder options(Option.Builder... builders) {
-            for (Option.Builder builder : builders) {
-                this.options.add(builder.build());
-            }
-            return this;
-        }
-        
-        public Builder arguments(Argument.Builder... builders) {
-            for (Argument.Builder builder : builders) {
-                this.arguments.add(builder.build());
-            }
-            return this;
-        }
-        
-        public CLIQUI<P> build() {
-            return new CLIQUI<>(serviceProvider, options, arguments);
-        }
-
+    public static CLIQUI<JPanel> swing(CLI cli) {
+        return new CLIQUI<>(new SwingCLIQUIServiceProvider(), cli);
     }
 }

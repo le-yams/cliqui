@@ -15,7 +15,7 @@
  */
 package com.mytdev.cliqui.swing.components;
 
-import com.mytdev.cliqui.beans.Option;
+import com.mytdev.cliqui.cli.Option;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.text.DocumentFilter;

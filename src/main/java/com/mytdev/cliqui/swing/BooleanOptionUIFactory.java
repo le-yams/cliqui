@@ -16,7 +16,7 @@
 package com.mytdev.cliqui.swing;
 
 import com.mytdev.cliqui.swing.components.BooleanOptionUI;
-import com.mytdev.cliqui.beans.Option;
+import com.mytdev.cliqui.cli.Option;
 import com.mytdev.cliqui.spi.CommandLineElementUI;
 import com.mytdev.cliqui.spi.CommandLineElementUIFactory;
 import javax.swing.JComponent;

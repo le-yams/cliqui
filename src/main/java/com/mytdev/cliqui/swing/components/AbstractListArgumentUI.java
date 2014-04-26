@@ -15,7 +15,7 @@
  */
 package com.mytdev.cliqui.swing.components;
 
-import com.mytdev.cliqui.beans.Argument;
+import com.mytdev.cliqui.cli.Argument;
 import com.mytdev.cliqui.spi.AbstractCommandLineElementUI;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

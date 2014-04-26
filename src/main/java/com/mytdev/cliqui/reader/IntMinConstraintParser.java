@@ -13,22 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mytdev.cliqui.swing;
 
-import com.mytdev.cliqui.swing.components.IntegerListArgumentUI;
-import com.mytdev.cliqui.cli.Argument;
-import com.mytdev.cliqui.spi.CommandLineElementUI;
-import com.mytdev.cliqui.spi.CommandLineElementUIFactory;
-import javax.swing.JComponent;
+package com.mytdev.cliqui.reader;
+
+import com.mytdev.cliqui.cli.constraints.IntMinConstraint;
+import javax.json.JsonNumber;
+import javax.json.JsonValue;
+import javax.json.JsonValue.ValueType;
 
 /**
  *
  * @author Yann D'Isanto
  */
-public final class IntegerListArgumentUIFactory implements CommandLineElementUIFactory<Argument, JComponent> {
+public final class IntMinConstraintParser implements ConstraintParser<IntMinConstraint> {
 
     @Override
-    public CommandLineElementUI<Argument, JComponent> createUI(Argument argument) {
-        return new IntegerListArgumentUI(argument);
+    public IntMinConstraint parse(JsonValue json) {
+        final ValueType valueType = json.getValueType();
+        if(valueType != ValueType.NUMBER) {
+            throw new IllegalArgumentException("invalid min value");
+        }
+        final JsonNumber value = (JsonNumber) json;
+        return new IntMinConstraint(value.intValue());
     }
+    
 }

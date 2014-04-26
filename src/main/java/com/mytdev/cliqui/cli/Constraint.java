@@ -13,19 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mytdev.cliqui.beans;
-
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+package com.mytdev.cliqui.cli;
 
 /**
+ * Command line element constraint marker interface
  *
  * @author Yann D'Isanto
  */
-@Getter
-@AllArgsConstructor
-public final class PathSelectionModeConstraint {
-
-    private final PathSelectionMode mode;
+public interface Constraint {
 
 }

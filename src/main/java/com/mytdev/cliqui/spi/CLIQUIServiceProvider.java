@@ -15,8 +15,8 @@
  */
 package com.mytdev.cliqui.spi;
 
-import com.mytdev.cliqui.beans.Argument;
-import com.mytdev.cliqui.beans.Option;
+import com.mytdev.cliqui.cli.Argument;
+import com.mytdev.cliqui.cli.Option;
 import com.mytdev.cliqui.spi.CLIQUIServiceProvider.ArgumentsUIFactory;
 import com.mytdev.cliqui.spi.CLIQUIServiceProvider.OptionsUIFactory;
 import java.util.List;

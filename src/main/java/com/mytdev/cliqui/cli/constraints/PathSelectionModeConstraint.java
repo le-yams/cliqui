@@ -13,8 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mytdev.cliqui.beans;
+package com.mytdev.cliqui.cli.constraints;
 
+import com.mytdev.cliqui.cli.Constraint;
+import com.mytdev.cliqui.cli.PathSelectionMode;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -24,8 +26,8 @@ import lombok.Getter;
  */
 @Getter
 @AllArgsConstructor
-public final class PathExistsConstraint {
+public final class PathSelectionModeConstraint implements Constraint {
 
-    private final boolean pathExistsMandatory;
+    private final PathSelectionMode mode;
 
 }

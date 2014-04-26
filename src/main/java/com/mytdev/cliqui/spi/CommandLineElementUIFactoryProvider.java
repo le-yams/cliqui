@@ -15,7 +15,7 @@
  */
 package com.mytdev.cliqui.spi;
 
-import com.mytdev.cliqui.beans.CommandLineElement;
+import com.mytdev.cliqui.cli.CommandLineElement;
 
 /**
  *

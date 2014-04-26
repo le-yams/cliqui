@@ -15,7 +15,7 @@
  */
 package com.mytdev.cliqui.swing.components;
 
-import com.mytdev.cliqui.beans.Argument;
+import com.mytdev.cliqui.cli.Argument;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import javax.swing.JOptionPane;

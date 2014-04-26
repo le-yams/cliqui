@@ -15,9 +15,9 @@
  */
 package com.mytdev.cliqui.swing.components;
 
-import com.mytdev.cliqui.beans.Argument;
-import com.mytdev.cliqui.beans.MaxConstraint;
-import com.mytdev.cliqui.beans.MinConstraint;
+import com.mytdev.cliqui.cli.Argument;
+import com.mytdev.cliqui.cli.constraints.IntMaxConstraint;
+import com.mytdev.cliqui.cli.constraints.IntMinConstraint;
 import com.mytdev.cliqui.util.IntegerDocumentFilter;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
@@ -37,8 +37,8 @@ public final class IntegerListArgumentUI extends AbstractListArgumentUI<String> 
     @SuppressWarnings("unchecked")
     public IntegerListArgumentUI(Argument commandLineElement) {
         super(commandLineElement);
-        final MinConstraint<Integer> minConstraint = commandLineElement.getConstraint(MinConstraint.class);
-        final MaxConstraint<Integer> maxConstraint = commandLineElement.getConstraint(MaxConstraint.class);
+        final IntMinConstraint minConstraint = commandLineElement.getConstraint(IntMinConstraint.class);
+        final IntMaxConstraint maxConstraint = commandLineElement.getConstraint(IntMaxConstraint.class);
         documentFilter = IntegerDocumentFilter.create(minConstraint, maxConstraint);
     }
 

@@ -15,7 +15,7 @@
  */
 package com.mytdev.cliqui.swing.components;
 
-import com.mytdev.cliqui.beans.CommandLineElement;
+import com.mytdev.cliqui.cli.CommandLineElement;
 import com.mytdev.cliqui.spi.AbstractCommandLineElementUI;
 import javax.swing.JComponent;
 import javax.swing.JLabel;

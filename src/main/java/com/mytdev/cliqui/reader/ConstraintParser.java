@@ -13,20 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mytdev.cliqui.beans;
+package com.mytdev.cliqui.reader;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import com.mytdev.cliqui.cli.Constraint;
+import javax.json.JsonValue;
 
 /**
  *
  * @author Yann D'Isanto
- * @param <T>
+ * @param <C> the constraint
  */
-@Getter
-@AllArgsConstructor
-public final class MaxConstraint<T extends Comparable<T>> {
+public interface ConstraintParser<C extends Constraint> {
 
-    private final T max;
-    
+    C parse(JsonValue json) throws IllegalArgumentException;
 }

@@ -15,8 +15,8 @@
  */
 package com.mytdev.cliqui.util;
 
-import com.mytdev.cliqui.beans.MaxConstraint;
-import com.mytdev.cliqui.beans.MinConstraint;
+import com.mytdev.cliqui.cli.constraints.IntMaxConstraint;
+import com.mytdev.cliqui.cli.constraints.IntMinConstraint;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
@@ -46,7 +46,7 @@ public final class IntegerDocumentFilter extends DocumentFilter {
         this.max = max;
     }
 
-    public static IntegerDocumentFilter create(MinConstraint<Integer> minConstraint, MaxConstraint<Integer> maxConstraint) {
+    public static IntegerDocumentFilter create(IntMinConstraint minConstraint, IntMaxConstraint maxConstraint) {
         if (minConstraint != null || maxConstraint != null) {
             final int min = minConstraint != null ? minConstraint.getMin() : Integer.MIN_VALUE;
             final int max = maxConstraint != null ? maxConstraint.getMax() : Integer.MAX_VALUE;

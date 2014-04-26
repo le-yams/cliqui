@@ -15,7 +15,7 @@
  */
 package com.mytdev.cliqui.swing;
 
-import com.mytdev.cliqui.beans.Argument;
+import com.mytdev.cliqui.cli.Argument;
 import com.mytdev.cliqui.spi.CommandLineElementUIFactory;
 import com.mytdev.cliqui.spi.CommandLineElementUIFactoryProvider;
 import java.util.EnumMap;

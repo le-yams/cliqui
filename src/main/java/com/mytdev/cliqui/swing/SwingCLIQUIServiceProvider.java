@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mytdev.cliqui;
+package com.mytdev.cliqui.swing;
 
-import com.mytdev.cliqui.SwingCLIQUI.SwingArgumentsUIFactory;
-import com.mytdev.cliqui.SwingCLIQUI.SwingOptionsUIFactory;
-import com.mytdev.cliqui.beans.Argument;
-import com.mytdev.cliqui.beans.Option;
+import com.mytdev.cliqui.swing.SwingCLIQUIServiceProvider.SwingArgumentsUIFactory;
+import com.mytdev.cliqui.swing.SwingCLIQUIServiceProvider.SwingOptionsUIFactory;
+import com.mytdev.cliqui.cli.Argument;
+import com.mytdev.cliqui.cli.Option;
 import com.mytdev.cliqui.spi.CLIQUIServiceProvider;
 import com.mytdev.cliqui.spi.CLIQUIServiceProvider.ArgumentsUIFactory;
 import com.mytdev.cliqui.spi.CLIQUIServiceProvider.OptionsUIFactory;
@@ -32,16 +32,12 @@ import javax.swing.JPanel;
  *
  * @author Yann D'Isanto
  */
-public final class SwingCLIQUI implements CLIQUIServiceProvider<JPanel> {
+public final class SwingCLIQUIServiceProvider implements CLIQUIServiceProvider<JPanel> {
 
     private final SwingOptionsUIFactory optionsUIFactory = new SwingOptionsUIFactory();
 
     private final SwingArgumentsUIFactory argumentsUIFactory = new SwingArgumentsUIFactory();
 
-    public static CLIQUI.Builder<JPanel> builder() {
-        return new CLIQUI.Builder<>(new SwingCLIQUI());
-    }
-    
     @Override
     public SwingOptionsUIFactory getOptionsUIFactory() {
         return optionsUIFactory;

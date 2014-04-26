@@ -15,11 +15,11 @@
  */
 package com.mytdev.cliqui.swing.components;
 
-import com.mytdev.cliqui.beans.CommandLineElement;
-import com.mytdev.cliqui.beans.PathExistsConstraint;
-import com.mytdev.cliqui.beans.PathFileExtensionConstraint;
-import com.mytdev.cliqui.beans.PathSelectionMode;
-import com.mytdev.cliqui.beans.PathSelectionModeConstraint;
+import com.mytdev.cliqui.cli.CommandLineElement;
+import com.mytdev.cliqui.cli.constraints.PathExistsConstraint;
+import com.mytdev.cliqui.cli.constraints.PathFileExtensionConstraint;
+import com.mytdev.cliqui.cli.PathSelectionMode;
+import com.mytdev.cliqui.cli.constraints.PathSelectionModeConstraint;
 import com.mytdev.cliqui.spi.AbstractCommandLineElementUI;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -102,7 +102,7 @@ public abstract class AbstractPathUI<T extends CommandLineElement> extends Abstr
         if(extensionConstraint != null) {
             final FileFilter extensionFileFilter = new FileNameExtensionFilter(
                 extensionConstraint.getDescription(), 
-                extensionConstraint.getExtensions());
+                extensionConstraint.getExtensions().toArray(new String[0]));
             fileChooser.setFileFilter(extensionFileFilter);
             fileChooser.setAcceptAllFileFilterUsed(extensionConstraint.isStrict() == false);
         }

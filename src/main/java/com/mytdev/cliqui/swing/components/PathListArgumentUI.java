@@ -15,9 +15,9 @@
  */
 package com.mytdev.cliqui.swing.components;
 
-import com.mytdev.cliqui.beans.Argument;
-import com.mytdev.cliqui.beans.PathSelectionMode;
-import com.mytdev.cliqui.beans.PathSelectionModeConstraint;
+import com.mytdev.cliqui.cli.Argument;
+import com.mytdev.cliqui.cli.PathSelectionMode;
+import com.mytdev.cliqui.cli.constraints.PathSelectionModeConstraint;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.io.File;

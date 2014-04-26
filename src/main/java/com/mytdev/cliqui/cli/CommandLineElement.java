@@ -13,8 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mytdev.cliqui.beans;
+package com.mytdev.cliqui.cli;
 
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -38,13 +40,13 @@ public abstract class CommandLineElement {
     @NonNull
     private final String description;
 
-    private final Map<Class<?>, Object> constraints = new HashMap<>();
+    private final Map<Class<?>, Constraint> constraints = new HashMap<>();
 
     CommandLineElement(Builder builder) {
         this.name = builder.name;
         this.label = builder.label != null ? builder.label : computeLabelFromName(builder.name);
         this.description = builder.description;
-        for (Object constraint : builder.constraints) {
+        for (Constraint constraint : (Set<Constraint>) builder.constraints) {
             this.constraints.put(constraint.getClass(), constraint);
         }
     }
@@ -67,7 +69,7 @@ public abstract class CommandLineElement {
 
         private String description;
 
-        private final Set<Object> constraints = new HashSet<>();
+        private final Set<Constraint> constraints = new HashSet<>();
 
         Builder(String name) {
             this.name = name;
@@ -83,11 +85,13 @@ public abstract class CommandLineElement {
             return (B) this;
         }
 
-        public B constraints(Object... constraints) {
-            for (Object constraint : constraints) {
-                this.constraints.add(constraint);
-            }
+        public B constraints(Collection<Constraint> constraints) {
+            this.constraints.addAll(constraints);
             return (B) this;
+        }
+        
+        public B constraints(Constraint... constraints) {
+            return constraints(Arrays.asList(constraints));
         }
 
         public abstract T build();

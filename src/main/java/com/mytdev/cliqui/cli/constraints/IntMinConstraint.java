@@ -13,15 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mytdev.cliqui.beans;
+package com.mytdev.cliqui.cli.constraints;
+
+import com.mytdev.cliqui.cli.Constraint;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 /**
  *
  * @author Yann D'Isanto
  */
-public enum PathSelectionMode {
+@Getter
+@AllArgsConstructor
+public final class IntMinConstraint implements Constraint {
 
-    FILES_ONLY,
-    DIRECTORIES_ONLY,
-    FILES_AND_DIRECTORIES
+    private final int min;
+    
 }

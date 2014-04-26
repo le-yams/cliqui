@@ -16,7 +16,7 @@
 package com.mytdev.cliqui.swing;
 
 import com.mytdev.cliqui.swing.components.PathListArgumentUI;
-import com.mytdev.cliqui.beans.Argument;
+import com.mytdev.cliqui.cli.Argument;
 import com.mytdev.cliqui.spi.CommandLineElementUI;
 import com.mytdev.cliqui.spi.CommandLineElementUIFactory;
 import javax.swing.JComponent;

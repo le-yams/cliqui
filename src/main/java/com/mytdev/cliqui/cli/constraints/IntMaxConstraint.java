@@ -13,20 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mytdev.cliqui.beans;
+package com.mytdev.cliqui.cli.constraints;
 
+import com.mytdev.cliqui.cli.Constraint;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
  *
  * @author Yann D'Isanto
- * @param <T>
  */
 @Getter
 @AllArgsConstructor
-public final class MinConstraint<T extends Comparable<T>> {
+public final class IntMaxConstraint implements Constraint {
 
-    private final T min;
+    private final int max;
     
 }

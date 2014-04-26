@@ -16,9 +16,9 @@
 package com.mytdev.cliqui.swing;
 
 import com.mytdev.cliqui.swing.components.TextOptionUI;
-import com.mytdev.cliqui.beans.MaxConstraint;
-import com.mytdev.cliqui.beans.MinConstraint;
-import com.mytdev.cliqui.beans.Option;
+import com.mytdev.cliqui.cli.constraints.IntMaxConstraint;
+import com.mytdev.cliqui.cli.constraints.IntMinConstraint;
+import com.mytdev.cliqui.cli.Option;
 import com.mytdev.cliqui.spi.CommandLineElementUI;
 import com.mytdev.cliqui.spi.CommandLineElementUIFactory;
 import com.mytdev.cliqui.util.IntegerDocumentFilter;
@@ -33,8 +33,8 @@ public final class IntegerOptionUIFactory implements CommandLineElementUIFactory
     @Override
     @SuppressWarnings("unchecked")
     public CommandLineElementUI<Option, JComponent> createUI(Option option) {
-        final MinConstraint<Integer> minConstraint = option.getConstraint(MinConstraint.class);
-        final MaxConstraint<Integer> maxConstraint = option.getConstraint(MaxConstraint.class);
+        final IntMinConstraint minConstraint = option.getConstraint(IntMinConstraint.class);
+        final IntMaxConstraint maxConstraint = option.getConstraint(IntMaxConstraint.class);
         return new TextOptionUI(option, IntegerDocumentFilter.create(minConstraint, maxConstraint));
     }
 }

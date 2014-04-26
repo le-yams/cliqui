@@ -13,22 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mytdev.cliqui.swing;
-
-import com.mytdev.cliqui.swing.components.IntegerListArgumentUI;
-import com.mytdev.cliqui.cli.Argument;
-import com.mytdev.cliqui.spi.CommandLineElementUI;
-import com.mytdev.cliqui.spi.CommandLineElementUIFactory;
-import javax.swing.JComponent;
+package com.mytdev.cliqui.cli;
 
 /**
  *
  * @author Yann D'Isanto
  */
-public final class IntegerListArgumentUIFactory implements CommandLineElementUIFactory<Argument, JComponent> {
+public enum PathSelectionMode {
 
-    @Override
-    public CommandLineElementUI<Argument, JComponent> createUI(Argument argument) {
-        return new IntegerListArgumentUI(argument);
-    }
+    FILES_ONLY,
+    DIRECTORIES_ONLY,
+    FILES_AND_DIRECTORIES
 }

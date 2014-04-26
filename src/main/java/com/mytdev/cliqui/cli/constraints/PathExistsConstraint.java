@@ -13,22 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mytdev.cliqui.swing;
+package com.mytdev.cliqui.cli.constraints;
 
-import com.mytdev.cliqui.swing.components.IntegerListArgumentUI;
-import com.mytdev.cliqui.cli.Argument;
-import com.mytdev.cliqui.spi.CommandLineElementUI;
-import com.mytdev.cliqui.spi.CommandLineElementUIFactory;
-import javax.swing.JComponent;
+import com.mytdev.cliqui.cli.Constraint;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 /**
  *
  * @author Yann D'Isanto
  */
-public final class IntegerListArgumentUIFactory implements CommandLineElementUIFactory<Argument, JComponent> {
+@Getter
+@AllArgsConstructor
+public final class PathExistsConstraint implements Constraint {
 
-    @Override
-    public CommandLineElementUI<Argument, JComponent> createUI(Argument argument) {
-        return new IntegerListArgumentUI(argument);
-    }
+    private final boolean pathExistsMandatory;
+
 }
