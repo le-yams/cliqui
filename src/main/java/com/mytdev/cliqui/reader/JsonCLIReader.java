@@ -19,6 +19,7 @@ import com.mytdev.cliqui.cli.Argument;
 import com.mytdev.cliqui.cli.Constraint;
 import com.mytdev.cliqui.cli.Option;
 import com.mytdev.cliqui.CLI;
+import com.mytdev.cliqui.CLIBuilder;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -41,13 +42,13 @@ public final class JsonCLIReader {
      */
     public CLI read(JsonObject json) throws IllegalArgumentException {
         final String command = json.getString("command", null);
-        final CLI cli = new CLI(command);
+        final CLIBuilder cli = new CLIBuilder(command);
         populateOptions(cli, json.getJsonObject("options"));
         populateArguments(cli, json.getJsonObject("arguments"));
         return cli;
     }
     
-    private void populateOptions(CLI cli, JsonObject json) {
+    private void populateOptions(CLIBuilder cli, JsonObject json) {
         if (json == null) {
             return;
         }
@@ -60,7 +61,7 @@ public final class JsonCLIReader {
         }
     }
 
-    private void populateArguments(CLI cli, JsonObject json) {
+    private void populateArguments(CLIBuilder cli, JsonObject json) {
         if (json == null) {
             return;
         }
