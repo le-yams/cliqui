@@ -15,45 +15,18 @@
  */
 package com.mytdev.cliqui.beans;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NonNull;
 
 /**
  *
  * @author Yann D'Isanto
+ * @param <T>
  */
 @Getter
-public final class Option extends CommandLineElement {
+@AllArgsConstructor
+public final class MinConstraint<T extends Comparable<T>> {
 
-    @NonNull
-    private final Type type;
-
-    private Option(Builder builder) {
-        super(builder);
-        this.type = builder.type;
-    }
+    private final T min;
     
-
-    public static enum Type {
-
-        FLAG, TEXT, INTEGER, PATH, PASSWORD
-
-    }
-
-    public static final class Builder extends CommandLineElement.Builder<Option, Builder> {
-        
-        @NonNull
-        private final Type type;
-        
-        public Builder(String name, Type type) {
-            super(name);
-            this.type = type;
-        }
-
-        @Override
-        public Option build() {
-            return new Option(this);
-        }
-        
-    }
 }

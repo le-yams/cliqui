@@ -30,14 +30,21 @@ public final class PathFileExtensionConstraint {
 
     private final boolean strict;
 
-    public PathFileExtensionConstraint(String description, String... extensions) {
-        this(description, true, extensions);
-    }
-    
     public PathFileExtensionConstraint(String description, boolean strict, String... extensions) {
-        this.description = description;
+        this.description = description != null ? description : computeDescriptionFromExtensions(extensions);
         this.extensions = extensions;
         this.strict = strict;
+    }
+
+    private static String computeDescriptionFromExtensions(String[] extensions) {
+        final StringBuilder sb = new StringBuilder();
+        for (String extension : extensions) {
+            if(sb.length() > 0) {
+                sb.append(", ");
+            }
+            sb.append("*.").append(extension);
+        }
+        return sb.toString();
     }
     
     

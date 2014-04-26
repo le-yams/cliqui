@@ -16,11 +16,11 @@
 package com.mytdev.cliqui.ui;
 
 import com.mytdev.cliqui.beans.Argument;
-import com.mytdev.cliqui.beans.IntMinMaxConstraint;
+import com.mytdev.cliqui.beans.MaxConstraint;
+import com.mytdev.cliqui.beans.MinConstraint;
 import com.mytdev.cliqui.ui.spi.CommandLineElementUI;
 import com.mytdev.cliqui.ui.spi.CommandLineElementUIFactory;
 import com.mytdev.cliqui.util.IntegerDocumentFilter;
-import javax.swing.text.DocumentFilter;
 
 /**
  *
@@ -29,11 +29,11 @@ import javax.swing.text.DocumentFilter;
 public final class IntegerArgumentUIFactory implements CommandLineElementUIFactory<Argument> {
 
     @Override
+    @SuppressWarnings("unchecked")
     public CommandLineElementUI<Argument> createUI(Argument argument) {
-        final IntMinMaxConstraint constraint = argument.getConstraint(IntMinMaxConstraint.class);
-        final DocumentFilter documentFilter = constraint != null
-            ? new IntegerDocumentFilter(constraint.getMin(), constraint.getMax())
-            : new IntegerDocumentFilter();
-        return new TextArgumentUI(argument, documentFilter);
+        final MinConstraint<Integer> minConstraint = argument.getConstraint(MinConstraint.class);
+        final MaxConstraint<Integer> maxConstraint = argument.getConstraint(MaxConstraint.class);
+        return new TextArgumentUI(argument, IntegerDocumentFilter.create(minConstraint, maxConstraint));
     }
+
 }

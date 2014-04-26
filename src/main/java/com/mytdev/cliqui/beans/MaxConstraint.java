@@ -15,24 +15,18 @@
  */
 package com.mytdev.cliqui.beans;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
  *
  * @author Yann D'Isanto
+ * @param <T>
  */
 @Getter
-public final class IntMinMaxConstraint {
+@AllArgsConstructor
+public final class MaxConstraint<T extends Comparable<T>> {
 
-    private final int min;
-
-    private final int max;
-
-    public IntMinMaxConstraint(int min, int max) {
-        if (min > max) {
-            throw new IllegalArgumentException("min value must be <= max value");
-        }
-        this.min = min;
-        this.max = max;
-    }
+    private final T max;
+    
 }

@@ -28,9 +28,4 @@ public final class PathExistsConstraint {
 
     private final boolean pathExistsMandatory;
 
-    public PathExistsConstraint() {
-        this(true);
-    }
-
-    
 }

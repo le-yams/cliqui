@@ -16,7 +16,9 @@
 package com.mytdev.cliqui.beans;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import lombok.Getter;
 import lombok.NonNull;
 
@@ -38,11 +40,11 @@ public abstract class CommandLineElement {
 
     private final Map<Class<?>, Object> constraints = new HashMap<>();
 
-    CommandLineElement(String name, String label, String description, Object... constraints) {
-        this.name = name;
-        this.label = label != null ? label : computeLabelFromName(name);
-        this.description = description;
-        for (Object constraint : constraints) {
+    CommandLineElement(Builder builder) {
+        this.name = builder.name;
+        this.label = builder.label != null ? builder.label : computeLabelFromName(builder.name);
+        this.description = builder.description;
+        for (Object constraint : builder.constraints) {
             this.constraints.put(constraint.getClass(), constraint);
         }
     }
@@ -56,4 +58,38 @@ public abstract class CommandLineElement {
         return name.replaceFirst("^(/|(--?))", "");
     }
 
+    public static abstract class Builder<T extends CommandLineElement, B extends Builder<T, B>> {
+
+        @NonNull
+        private final String name;
+
+        private String label;
+
+        private String description;
+
+        private final Set<Object> constraints = new HashSet<>();
+
+        Builder(String name) {
+            this.name = name;
+        }
+
+        public B label(String label) {
+            this.label = label;
+            return (B) this;
+        }
+
+        public B description(String description) {
+            this.description = description;
+            return (B) this;
+        }
+
+        public B constraints(Object... constraints) {
+            for (Object constraint : constraints) {
+                this.constraints.add(constraint);
+            }
+            return (B) this;
+        }
+
+        public abstract T build();
+    }
 }

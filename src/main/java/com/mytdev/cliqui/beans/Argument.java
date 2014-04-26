@@ -28,9 +28,9 @@ public final class Argument extends CommandLineElement {
     @NonNull
     private final Type type;
     
-    public Argument(String name, Type type, String label, String description, Object... constraints) {
-        super(name, label, description, constraints);
-        this.type = type;
+    public Argument(Builder builder) {
+        super(builder);
+        this.type = builder.type;
     }
 
     public static enum Type {
@@ -42,5 +42,22 @@ public final class Argument extends CommandLineElement {
         PATH,
         PATH_LIST
 
+    }
+    
+    public static final class Builder extends CommandLineElement.Builder<Argument, Builder> {
+        
+        @NonNull
+        private final Type type;
+        
+        public Builder(String name, Type type) {
+            super(name);
+            this.type = type;
+        }
+
+        @Override
+        public Argument build() {
+            return new Argument(this);
+        }
+        
     }
 }

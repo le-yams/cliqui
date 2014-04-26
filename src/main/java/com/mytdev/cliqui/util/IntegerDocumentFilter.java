@@ -15,6 +15,8 @@
  */
 package com.mytdev.cliqui.util;
 
+import com.mytdev.cliqui.beans.MaxConstraint;
+import com.mytdev.cliqui.beans.MinConstraint;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
@@ -44,6 +46,16 @@ public final class IntegerDocumentFilter extends DocumentFilter {
         this.max = max;
     }
 
+    public static IntegerDocumentFilter create(MinConstraint<Integer> minConstraint, MaxConstraint<Integer> maxConstraint) {
+        if (minConstraint != null || maxConstraint != null) {
+            final int min = minConstraint != null ? minConstraint.getMin() : Integer.MIN_VALUE;
+            final int max = maxConstraint != null ? maxConstraint.getMax() : Integer.MAX_VALUE;
+            return new IntegerDocumentFilter(min, max);
+        } else {
+            return new IntegerDocumentFilter();
+        }
+    }
+    
     @Override
     public void insertString(FilterBypass fb, int offset, String text,
         AttributeSet attr) throws BadLocationException {
