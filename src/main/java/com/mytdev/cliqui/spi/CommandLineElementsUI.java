@@ -31,16 +31,16 @@ import java.util.Map;
  */
 public abstract class CommandLineElementsUI<T extends CommandLineElement, P> {
 
-    private final CommandLineElementUIFactoryProvider<T> factoryProvider;
-    
+    private final CommandLineElementUIFactoryProvider<T, ?> factoryProvider;
+
     protected final List<T> commandLineElements;
 
-    protected final Map<T, CommandLineElementUI<T>> uis;
-    
-    public CommandLineElementsUI(CommandLineElementUIFactoryProvider<T> factoryProvider, List<T> commandLineElements) {
+    protected final Map<T, CommandLineElementUI<T, ?>> uis;
+
+    public CommandLineElementsUI(CommandLineElementUIFactoryProvider<T, ?> factoryProvider, List<T> commandLineElements) {
         this.factoryProvider = factoryProvider;
         this.commandLineElements = Collections.unmodifiableList(commandLineElements);
-        final Map<T, CommandLineElementUI<T>> uisMap = new HashMap<>(commandLineElements.size());
+        final Map<T, CommandLineElementUI<T, ?>> uisMap = new HashMap<>(commandLineElements.size());
         for (T commandLineElement : commandLineElements) {
             if (commandLineElement != null) {
                 uisMap.put(commandLineElement, buildCommandLineElementUI(commandLineElement));
@@ -61,13 +61,20 @@ public abstract class CommandLineElementsUI<T extends CommandLineElement, P> {
     public final Collection<T> getCommandLineElements() {
         return commandLineElements;
     }
-    
+
     protected abstract void initPanel();
 
     public abstract P getPanel();
-    
-    protected final CommandLineElementUI<T> buildCommandLineElementUI(T commandLineElement) {
-        final CommandLineElementUIFactory<T> factory = factoryProvider.getUIFactory(commandLineElement);
+
+    /**
+     * Creates then returns the given command line element UI. The UI component type is
+     * using the factory given at this instance constructor.
+     *
+     * @param commandLineElement
+     * @return
+     */
+    protected final CommandLineElementUI<T, ?> buildCommandLineElementUI(T commandLineElement) {
+        final CommandLineElementUIFactory<T, ?> factory = factoryProvider.getUIFactory(commandLineElement);
         if (factory == null) {
             throw new IllegalArgumentException("unsupported command line element: " + commandLineElement);
         }

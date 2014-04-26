@@ -17,17 +17,17 @@ package com.mytdev.cliqui.spi;
 
 import com.mytdev.cliqui.beans.CommandLineElement;
 import java.util.List;
-import javax.swing.JComponent;
 
 /**
  *
  * @author Yann D'Isanto
- * @param <T>
+ * @param <T> the command line element type
+ * @param <C> the command line element UI component type
  */
-public interface CommandLineElementUI<T extends CommandLineElement> {
+public interface CommandLineElementUI<T extends CommandLineElement, C> {
 
     /**
-     * @return this ui command line element
+     * @return this UI command line element
      */
     T getCommandLineElement();
     
@@ -41,19 +41,19 @@ public interface CommandLineElementUI<T extends CommandLineElement> {
      *
      * @return the label component instance or null if none.
      */
-    JComponent getLabelComponent();
+    C getLabelComponent();
 
     /**
      * Returns the component to be placed after the label with horizontal fill.
      *
      * @return the field component instance or null if none.
      */
-    JComponent getFieldComponent();
+    C getFieldComponent();
 
     /**
      * Returns the component to be placed on the right with no horizontal fill.
      *
      * @return the field suffix component instance or null if none.
      */
-    JComponent getFieldSuffixComponent();
+    C getFieldSuffixComponent();
 }

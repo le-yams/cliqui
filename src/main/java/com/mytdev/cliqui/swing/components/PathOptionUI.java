@@ -13,34 +13,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mytdev.cliqui.swing;
+package com.mytdev.cliqui.swing.components;
 
 import com.mytdev.cliqui.beans.Option;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.text.DocumentFilter;
 
 /**
  *
  * @author Yann D'Isanto
  */
-public final class TextOptionUI extends AbstractTextUI<Option> {
+public final class PathOptionUI extends AbstractPathUI<Option> {
 
-    public TextOptionUI(Option option) {
+    public PathOptionUI(Option option) {
         super(option);
-    }
-
-    public TextOptionUI(Option option, DocumentFilter documentFilter) {
-        super(option, documentFilter);
     }
 
     @Override
     public List<String> getCommandLineValue() {
         final List<String> cli = new ArrayList<>();
-        final String value = field.getText();
-        if(value.isEmpty() == false) {
+        final String path = field.getText();
+        if (path.isEmpty() == false) {
             cli.add(getCommandLineElement().getName());
-            cli.add(value);
+            cli.add(path);
         }
         return cli;
     }

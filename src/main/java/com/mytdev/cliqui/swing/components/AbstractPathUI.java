@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mytdev.cliqui.swing;
+package com.mytdev.cliqui.swing.components;
 
 import com.mytdev.cliqui.beans.CommandLineElement;
 import com.mytdev.cliqui.beans.PathExistsConstraint;
@@ -41,7 +41,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  * @author Yann D'Isanto
  * @param <T>
  */
-public abstract class AbstractPathUI<T extends CommandLineElement> extends AbstractCommandLineElementUI<T> implements ActionListener {
+public abstract class AbstractPathUI<T extends CommandLineElement> extends AbstractCommandLineElementUI<T, JComponent> implements ActionListener {
 
     private static final Map<PathSelectionMode, Integer> SELECTION_MODES = new EnumMap<>(PathSelectionMode.class);
 

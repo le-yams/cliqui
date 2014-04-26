@@ -20,9 +20,10 @@ import com.mytdev.cliqui.beans.CommandLineElement;
 /**
  *
  * @author Yann D'Isanto
- * @param <T>
+ * @param <T> the command line element type
+ * @param <C> the command line element UI component type
  */
-public interface CommandLineElementUIFactory<T extends CommandLineElement> {
+public interface CommandLineElementUIFactory<T extends CommandLineElement, C> {
 
-    CommandLineElementUI<T> createUI(T commandLineElement);
+    CommandLineElementUI<T, C> createUI(T commandLineElement);
 }

@@ -15,8 +15,6 @@
  */
 package com.mytdev.cliqui;
 
-import com.mytdev.cliqui.spi.ArgumentUIFactoryProvider;
-import com.mytdev.cliqui.spi.OptionUIFactoryProvider;
 import com.mytdev.cliqui.beans.Argument;
 import com.mytdev.cliqui.beans.MaxConstraint;
 import com.mytdev.cliqui.beans.MinConstraint;
@@ -25,27 +23,27 @@ import com.mytdev.cliqui.beans.PathExistsConstraint;
 import com.mytdev.cliqui.beans.PathFileExtensionConstraint;
 import com.mytdev.cliqui.beans.PathSelectionMode;
 import com.mytdev.cliqui.beans.PathSelectionModeConstraint;
+import com.mytdev.cliqui.spi.CLIQUIServiceProvider;
 import com.mytdev.cliqui.spi.CommandLineElementsUI;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.JPanel;
 import lombok.Getter;
 
 /**
  *
  * @author Yann D'Isanto
  */
-public final class CLIQUI {
+public final class CLIQUI<P> {
 
     @Getter
-    private final CommandLineElementsUI<Option, JPanel> optionsUI;
+    private final CommandLineElementsUI<Option, P> optionsUI;
 
     @Getter
-    private final CommandLineElementsUI<Argument, JPanel> argumentsUI;
+    private final CommandLineElementsUI<Argument, P> argumentsUI;
 
-    public CLIQUI(List<Option> options, List<Argument> arguments) {
-        this.optionsUI = new SwingCommandLineElementsUI<>(new OptionUIFactoryProvider(), options);
-        this.argumentsUI = new SwingCommandLineElementsUI<>(new ArgumentUIFactoryProvider(), arguments);
+    public CLIQUI(CLIQUIServiceProvider<P> serviceProvider, List<Option> options, List<Argument> arguments) {
+        this.optionsUI = serviceProvider.getOptionsUIFactory().createUI(options);
+        this.argumentsUI = serviceProvider.getArgumentsUIFactory().createUI(arguments);
     }
 
     private static Option.Builder option(String name, Option.Type type) {
@@ -132,12 +130,19 @@ public final class CLIQUI {
         return new PathFileExtensionConstraint(description, strict, extensions);
     }
 
-    public static final class Builder {
+    public static final class Builder<P> {
 
+        private final CLIQUIServiceProvider<P> serviceProvider;
+        
         private final List<Option> options = new ArrayList<>();
 
         private final List<Argument> arguments = new ArrayList<>();
 
+        public Builder(CLIQUIServiceProvider<P> serviceProvider) {
+            this.serviceProvider = serviceProvider;
+        }
+
+        
         public Builder options(Option.Builder... builders) {
             for (Option.Builder builder : builders) {
                 this.options.add(builder.build());
@@ -152,8 +157,8 @@ public final class CLIQUI {
             return this;
         }
         
-        public CLIQUI build() {
-            return new CLIQUI(options, arguments);
+        public CLIQUI<P> build() {
+            return new CLIQUI<>(serviceProvider, options, arguments);
         }
 
     }

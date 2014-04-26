@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mytdev.cliqui.swing;
+package com.mytdev.cliqui.swing.components;
 
 import com.mytdev.cliqui.beans.CommandLineElement;
 import com.mytdev.cliqui.spi.AbstractCommandLineElementUI;
@@ -28,7 +28,7 @@ import javax.swing.text.PlainDocument;
  * @author Yann D'Isanto
  * @param <T>
  */
-public abstract class AbstractTextUI<T extends CommandLineElement> extends AbstractCommandLineElementUI<T> {
+public abstract class AbstractTextUI<T extends CommandLineElement> extends AbstractCommandLineElementUI<T, JComponent> {
 
     protected final JLabel label = new JLabel();
 

@@ -15,22 +15,24 @@
  */
 package com.mytdev.cliqui.swing;
 
+import com.mytdev.cliqui.swing.components.TextOptionUI;
 import com.mytdev.cliqui.beans.MaxConstraint;
 import com.mytdev.cliqui.beans.MinConstraint;
 import com.mytdev.cliqui.beans.Option;
 import com.mytdev.cliqui.spi.CommandLineElementUI;
 import com.mytdev.cliqui.spi.CommandLineElementUIFactory;
 import com.mytdev.cliqui.util.IntegerDocumentFilter;
+import javax.swing.JComponent;
 
 /**
  *
  * @author Yann D'Isanto
  */
-public final class IntegerOptionUIFactory implements CommandLineElementUIFactory<Option> {
+public final class IntegerOptionUIFactory implements CommandLineElementUIFactory<Option, JComponent> {
 
     @Override
     @SuppressWarnings("unchecked")
-    public CommandLineElementUI<Option> createUI(Option option) {
+    public CommandLineElementUI<Option, JComponent> createUI(Option option) {
         final MinConstraint<Integer> minConstraint = option.getConstraint(MinConstraint.class);
         final MaxConstraint<Integer> maxConstraint = option.getConstraint(MaxConstraint.class);
         return new TextOptionUI(option, IntegerDocumentFilter.create(minConstraint, maxConstraint));

@@ -16,22 +16,22 @@
 package com.mytdev.cliqui.spi;
 
 import com.mytdev.cliqui.beans.CommandLineElement;
-import com.mytdev.cliqui.spi.CommandLineElementUIFactory;
 
 /**
  *
  * @author Yann D'Isanto
  * @param <T> the command line element type
+ * @param <C> the command line element UI component type
  */
-public interface CommandLineElementUIFactoryProvider<T extends CommandLineElement> {
+public interface CommandLineElementUIFactoryProvider<T extends CommandLineElement, C> {
 
     /**
-     * Returns the ui factory for the given command line element.
+     * Returns the UI factory for the given command line element.
      *
      * @param commandLineElement
-     * @return a CommandLineElementUIFactory instance
+     * @return a SwingCommandLineElementUIFactory instance
      * @throws UnsupportedOperationException if the specified command line
      * element is not supported.
      */
-    CommandLineElementUIFactory<T> getUIFactory(T commandLineElement) throws UnsupportedOperationException;
+    CommandLineElementUIFactory<T, C> getUIFactory(T commandLineElement) throws UnsupportedOperationException;
 }

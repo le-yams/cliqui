@@ -15,18 +15,20 @@
  */
 package com.mytdev.cliqui.swing;
 
+import com.mytdev.cliqui.swing.components.PathArgumentUI;
 import com.mytdev.cliqui.beans.Argument;
 import com.mytdev.cliqui.spi.CommandLineElementUI;
 import com.mytdev.cliqui.spi.CommandLineElementUIFactory;
+import javax.swing.JComponent;
 
 /**
  *
  * @author Yann D'Isanto
  */
-public final class PathArgumentUIFactory implements CommandLineElementUIFactory<Argument> {
+public final class PathArgumentUIFactory implements CommandLineElementUIFactory<Argument, JComponent> {
 
     @Override
-    public CommandLineElementUI<Argument> createUI(Argument argument) {
+    public CommandLineElementUI<Argument, JComponent> createUI(Argument argument) {
         return new PathArgumentUI(argument);
     }
 }

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mytdev.cliqui.swing;
+package com.mytdev.cliqui.swing.components;
 
 import com.mytdev.cliqui.beans.Argument;
 import com.mytdev.cliqui.spi.AbstractCommandLineElementUI;
@@ -35,7 +35,7 @@ import javax.swing.JScrollPane;
  * @author Yann D'Isanto
  * @param <T> list element type
  */
-public abstract class AbstractListArgumentUI<T> extends AbstractCommandLineElementUI<Argument> {
+public abstract class AbstractListArgumentUI<T> extends AbstractCommandLineElementUI<Argument, JComponent> {
 
     protected final DefaultListModel<T> listModel = new DefaultListModel<>();
 

@@ -15,18 +15,20 @@
  */
 package com.mytdev.cliqui.swing;
 
+import com.mytdev.cliqui.swing.components.PasswordOptionUI;
 import com.mytdev.cliqui.beans.Option;
 import com.mytdev.cliqui.spi.CommandLineElementUI;
 import com.mytdev.cliqui.spi.CommandLineElementUIFactory;
+import javax.swing.JComponent;
 
 /**
  *
  * @author Yann D'Isanto
  */
-public final class PasswordOptionUIFactory implements CommandLineElementUIFactory<Option> {
+public final class PasswordOptionUIFactory implements CommandLineElementUIFactory<Option, JComponent> {
 
     @Override
-    public CommandLineElementUI<Option> createUI(Option option) {
+    public CommandLineElementUI<Option, JComponent> createUI(Option option) {
         return new PasswordOptionUI(option);
     }
 }

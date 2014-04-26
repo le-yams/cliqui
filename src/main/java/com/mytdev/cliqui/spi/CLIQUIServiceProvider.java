@@ -13,29 +13,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mytdev.cliqui.swing;
+package com.mytdev.cliqui.spi;
 
 import com.mytdev.cliqui.beans.Argument;
-import java.util.ArrayList;
+import com.mytdev.cliqui.beans.Option;
+import com.mytdev.cliqui.spi.CLIQUIServiceProvider.ArgumentsUIFactory;
+import com.mytdev.cliqui.spi.CLIQUIServiceProvider.OptionsUIFactory;
 import java.util.List;
 
 /**
  *
  * @author Yann D'Isanto
+ * @param <P> the UI panel type
  */
-public final class PathArgumentUI extends AbstractPathUI<Argument> {
+public interface CLIQUIServiceProvider<P> {
 
-    public PathArgumentUI(Argument argument) {
-        super(argument);
+    OptionsUIFactory<P> getOptionsUIFactory();
+
+    ArgumentsUIFactory<P> getArgumentsUIFactory();
+
+    public static interface OptionsUIFactory<P> {
+
+        CommandLineElementsUI<Option, P> createUI(List<Option> options);
     }
 
-    @Override
-    public List<String> getCommandLineValue() {
-        final List<String> cli = new ArrayList<>();
-        final String path = field.getText();
-        if (path.isEmpty() == false) {
-            cli.add(path);
-        }
-        return cli;
+    public static interface ArgumentsUIFactory<P> {
+
+        CommandLineElementsUI<Argument, P> createUI(List<Argument> argument);
     }
 }

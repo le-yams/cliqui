@@ -13,51 +13,35 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mytdev.cliqui.swing;
+package com.mytdev.cliqui.swing.components;
 
-import com.mytdev.cliqui.beans.CommandLineElement;
-import com.mytdev.cliqui.spi.AbstractCommandLineElementUI;
+import com.mytdev.cliqui.beans.Option;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.JCheckBox;
-import javax.swing.JComponent;
+import javax.swing.text.DocumentFilter;
 
 /**
  *
  * @author Yann D'Isanto
- * @param <T>
  */
-public final class BooleanOptionUI <T extends CommandLineElement> extends AbstractCommandLineElementUI<T> {
+public final class TextOptionUI extends AbstractTextUI<Option> {
 
-    private final JCheckBox checkBox = new JCheckBox();
+    public TextOptionUI(Option option) {
+        super(option);
+    }
 
-    public BooleanOptionUI(T commandLineElement) {
-        super(commandLineElement);
-        checkBox.setText(commandLineElement.getLabel());
-        checkBox.setToolTipText(commandLineElement.getDescription());
+    public TextOptionUI(Option option, DocumentFilter documentFilter) {
+        super(option, documentFilter);
     }
 
     @Override
     public List<String> getCommandLineValue() {
         final List<String> cli = new ArrayList<>();
-        if(checkBox.isSelected()) {
+        final String value = field.getText();
+        if(value.isEmpty() == false) {
             cli.add(getCommandLineElement().getName());
+            cli.add(value);
         }
         return cli;
-    }
-
-    @Override
-    public JComponent getLabelComponent() {
-        return null;
-    }
-
-    @Override
-    public JComponent getFieldComponent() {
-        return checkBox;
-    }
-
-    @Override
-    public JComponent getFieldSuffixComponent() {
-        return null;
     }
 }

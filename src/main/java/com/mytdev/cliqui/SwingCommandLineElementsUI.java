@@ -15,14 +15,15 @@
  */
 package com.mytdev.cliqui;
 
-import com.mytdev.cliqui.spi.CommandLineElementUIFactoryProvider;
 import com.mytdev.cliqui.beans.CommandLineElement;
 import com.mytdev.cliqui.spi.CommandLineElementUI;
+import com.mytdev.cliqui.spi.CommandLineElementUIFactoryProvider;
 import com.mytdev.cliqui.spi.CommandLineElementsUI;
 import java.awt.Component;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.GroupLayout;
+import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.LayoutStyle;
 import javax.swing.SwingConstants;
@@ -37,7 +38,7 @@ public final class SwingCommandLineElementsUI<T extends CommandLineElement> exte
     private final JPanel panel = new JPanel();
 
     
-    public SwingCommandLineElementsUI(CommandLineElementUIFactoryProvider<T> factoryProvider, List<T> commandLineElements) {
+    public SwingCommandLineElementsUI(CommandLineElementUIFactoryProvider<T, JComponent> factoryProvider, List<T> commandLineElements) {
         super(factoryProvider, commandLineElements);
     }
     
@@ -58,7 +59,7 @@ public final class SwingCommandLineElementsUI<T extends CommandLineElement> exte
         final List<Component> labels = new ArrayList<>();
         GroupLayout.ParallelGroup noLabelFieldsGroup = null;
         for (T commandLineElement : commandLineElements) {
-            final CommandLineElementUI<T> paramUI = uis.get(commandLineElement);
+            final CommandLineElementUI<T, JComponent> paramUI = (CommandLineElementUI<T, JComponent>) uis.get(commandLineElement);
             final Component label = paramUI.getLabelComponent();
             final Component field = paramUI.getFieldComponent();
             final Component fieldSuffix = paramUI.getFieldSuffixComponent();
@@ -89,7 +90,7 @@ public final class SwingCommandLineElementsUI<T extends CommandLineElement> exte
         }
         final GroupLayout.SequentialGroup vGroup = layout.createSequentialGroup();
         for (T commandLineElement : commandLineElements) {
-            final CommandLineElementUI<T> paramUI = uis.get(commandLineElement);
+            final CommandLineElementUI<T, JComponent> paramUI = (CommandLineElementUI<T, JComponent>) uis.get(commandLineElement);
             final Component label = paramUI.getLabelComponent();
             final Component field = paramUI.getFieldComponent();
             final Component fieldSuffix = paramUI.getFieldSuffixComponent();

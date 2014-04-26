@@ -13,25 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mytdev.cliqui.spi;
+package com.mytdev.cliqui.swing;
 
 import com.mytdev.cliqui.beans.Option;
-import com.mytdev.cliqui.swing.BooleanOptionUIFactory;
-import com.mytdev.cliqui.swing.IntegerOptionUIFactory;
-import com.mytdev.cliqui.swing.PasswordOptionUIFactory;
-import com.mytdev.cliqui.swing.PathOptionUIFactory;
-import com.mytdev.cliqui.swing.TextOptionUIFactory;
 import com.mytdev.cliqui.spi.CommandLineElementUIFactory;
+import com.mytdev.cliqui.spi.CommandLineElementUIFactoryProvider;
 import java.util.EnumMap;
 import java.util.Map;
+import javax.swing.JComponent;
 
 /**
  *
  * @author Yann D'Isanto
  */
-public final class OptionUIFactoryProvider implements CommandLineElementUIFactoryProvider<Option> {
+public final class OptionUIFactoryProvider implements CommandLineElementUIFactoryProvider<Option, JComponent> {
 
-    private static final Map<Option.Type, CommandLineElementUIFactory<Option>> OPTION_UI_FACTORIES = new EnumMap<>(Option.Type.class);
+    private static final Map<Option.Type, CommandLineElementUIFactory<Option, JComponent>> OPTION_UI_FACTORIES = new EnumMap<>(Option.Type.class);
 
     static {
         OPTION_UI_FACTORIES.put(Option.Type.FLAG, new BooleanOptionUIFactory());
@@ -43,8 +40,8 @@ public final class OptionUIFactoryProvider implements CommandLineElementUIFactor
 
     @Override
     @SuppressWarnings("unchecked")
-    public CommandLineElementUIFactory<Option> getUIFactory(Option option) throws UnsupportedOperationException {
-        final CommandLineElementUIFactory<Option> factory = OPTION_UI_FACTORIES.get(option.getType());
+    public CommandLineElementUIFactory<Option, JComponent> getUIFactory(Option option) throws UnsupportedOperationException {
+        final CommandLineElementUIFactory<Option, JComponent> factory = OPTION_UI_FACTORIES.get(option.getType());
         if(factory == null) {
             throw new UnsupportedOperationException("unsupported option type: " + option.getType());
         }

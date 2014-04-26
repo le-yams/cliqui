@@ -23,9 +23,10 @@ import lombok.Getter;
  *
  * @author Yann D'Isanto
  * @param <T>
+ * @param <C> the command line element UI component type
  */
 @AllArgsConstructor
-public abstract class AbstractCommandLineElementUI<T extends CommandLineElement> implements CommandLineElementUI {
+public abstract class AbstractCommandLineElementUI<T extends CommandLineElement, C> implements CommandLineElementUI<T, C> {
 
     @Getter
     private final T commandLineElement;

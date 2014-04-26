@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mytdev.cliqui.swing;
+package com.mytdev.cliqui.swing.components;
 
 import com.mytdev.cliqui.beans.CommandLineElement;
 import com.mytdev.cliqui.spi.AbstractCommandLineElementUI;
@@ -31,7 +31,7 @@ import javax.swing.JPasswordField;
  * @author Yann D'Isanto
  * @param <T>
  */
-public final class PasswordOptionUI <T extends CommandLineElement> extends AbstractCommandLineElementUI<T> implements ActionListener {
+public final class PasswordOptionUI <T extends CommandLineElement> extends AbstractCommandLineElementUI<T, JComponent> implements ActionListener {
 
     private final JLabel label = new JLabel();
 

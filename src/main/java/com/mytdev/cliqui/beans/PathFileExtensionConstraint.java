@@ -25,7 +25,7 @@ import lombok.Getter;
 public final class PathFileExtensionConstraint {
 
     private final String description;
-    
+
     private final String[] extensions;
 
     private final boolean strict;
@@ -39,13 +39,12 @@ public final class PathFileExtensionConstraint {
     private static String computeDescriptionFromExtensions(String[] extensions) {
         final StringBuilder sb = new StringBuilder();
         for (String extension : extensions) {
-            if(sb.length() > 0) {
+            if (sb.length() > 0) {
                 sb.append(", ");
             }
             sb.append("*.").append(extension);
         }
         return sb.toString();
     }
-    
-    
+
 }

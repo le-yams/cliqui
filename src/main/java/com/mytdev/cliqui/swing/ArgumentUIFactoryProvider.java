@@ -13,26 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mytdev.cliqui.spi;
+package com.mytdev.cliqui.swing;
 
 import com.mytdev.cliqui.beans.Argument;
-import com.mytdev.cliqui.swing.IntegerArgumentUIFactory;
-import com.mytdev.cliqui.swing.IntegerListArgumentUIFactory;
-import com.mytdev.cliqui.swing.PathArgumentUIFactory;
-import com.mytdev.cliqui.swing.PathListArgumentUIFactory;
-import com.mytdev.cliqui.swing.TextArgumentUIFactory;
-import com.mytdev.cliqui.swing.TextListArgumentUIFactory;
 import com.mytdev.cliqui.spi.CommandLineElementUIFactory;
+import com.mytdev.cliqui.spi.CommandLineElementUIFactoryProvider;
 import java.util.EnumMap;
 import java.util.Map;
+import javax.swing.JComponent;
 
 /**
  *
  * @author Yann D'Isanto
  */
-public final class ArgumentUIFactoryProvider implements CommandLineElementUIFactoryProvider<Argument> {
+public final class ArgumentUIFactoryProvider implements CommandLineElementUIFactoryProvider<Argument, JComponent> {
 
-    private static final Map<Argument.Type, CommandLineElementUIFactory<Argument>> ARGUMENT_UI_FACTORIES = new EnumMap<>(Argument.Type.class);
+    private static final Map<Argument.Type, CommandLineElementUIFactory<Argument, JComponent>> ARGUMENT_UI_FACTORIES = new EnumMap<>(Argument.Type.class);
 
     static {
         ARGUMENT_UI_FACTORIES.put(Argument.Type.PATH, new PathArgumentUIFactory());
@@ -45,8 +41,8 @@ public final class ArgumentUIFactoryProvider implements CommandLineElementUIFact
 
     @Override
     @SuppressWarnings("unchecked")
-    public CommandLineElementUIFactory<Argument> getUIFactory(Argument argument) throws UnsupportedOperationException {
-        final CommandLineElementUIFactory<Argument> factory = ARGUMENT_UI_FACTORIES.get(argument.getType());
+    public CommandLineElementUIFactory<Argument, JComponent> getUIFactory(Argument argument) throws UnsupportedOperationException {
+        final CommandLineElementUIFactory<Argument, JComponent> factory = ARGUMENT_UI_FACTORIES.get(argument.getType());
         if (factory == null) {
             throw new UnsupportedOperationException("unsupported argument type: " + argument.getType());
         }
