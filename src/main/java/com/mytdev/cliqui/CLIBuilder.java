@@ -140,7 +140,7 @@ public final class CLIBuilder implements CLI {
      * @throws IOException if an I/O error occurs
      * @throws IllegalArgumentException if not CLI valid json
      */
-    public static CLI fromInputStream(File file) throws IOException, IllegalArgumentException {
+    public static CLI fromFile(File file) throws IOException, IllegalArgumentException {
         return fromJson(readCLIJsonObject(file.toURI().toURL()));
     }
 
