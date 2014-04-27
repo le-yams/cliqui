@@ -25,5 +25,10 @@ import com.mytdev.cliqui.cli.CommandLineElement;
  */
 public interface CommandLineElementUIFactory<T extends CommandLineElement, C> {
 
+    /**
+     * Creates then returns the specified command line element UI
+     * @param commandLineElement the command line element
+     * @return the specified command line element UI
+     */
     CommandLineElementUI<T, C> createUI(T commandLineElement);
 }

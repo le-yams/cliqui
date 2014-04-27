@@ -75,21 +75,45 @@ public abstract class CommandLineElement {
             this.name = name;
         }
 
+        /**
+         * Sets the label to display in UI. If {@code null } the name is used
+         * (without "-", "--" or "/" prefix).
+         *
+         * @param label the label
+         * @return this builder instance
+         */
         public B label(String label) {
             this.label = label;
             return (B) this;
         }
 
+        /**
+         * Sets the description to display in UI ({@code null } means no
+         * description)
+         *
+         * @param description the description
+         * @return this builder instance
+         */
         public B description(String description) {
             this.description = description;
             return (B) this;
         }
 
+        /**
+         * Adds the given constraints
+         * @param constraints the constraints to add
+         * @return this builder instance
+         */
         public B constraints(Collection<Constraint> constraints) {
             this.constraints.addAll(constraints);
             return (B) this;
         }
-        
+
+        /**
+         * Adds the given constraints
+         * @param constraints the constraints to add
+         * @return this builder instance
+         */
         public B constraints(Constraint... constraints) {
             return constraints(Arrays.asList(constraints));
         }

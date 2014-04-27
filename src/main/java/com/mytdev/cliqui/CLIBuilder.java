@@ -18,7 +18,7 @@ package com.mytdev.cliqui;
 import com.mytdev.cliqui.cli.Argument;
 import com.mytdev.cliqui.cli.Constraint;
 import com.mytdev.cliqui.cli.Option;
-import com.mytdev.cliqui.cli.PathSelectionMode;
+import com.mytdev.cliqui.cli.constraints.PathSelectionMode;
 import com.mytdev.cliqui.cli.constraints.IntMaxConstraint;
 import com.mytdev.cliqui.cli.constraints.IntMinConstraint;
 import com.mytdev.cliqui.cli.constraints.PathExistsConstraint;

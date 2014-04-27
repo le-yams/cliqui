@@ -29,7 +29,7 @@ public interface CommandLineElementUIFactoryProvider<T extends CommandLineElemen
      * Returns the UI factory for the given command line element.
      *
      * @param commandLineElement
-     * @return a SwingCommandLineElementUIFactory instance
+     * @return a CommandLineElementUIFactory instance
      * @throws UnsupportedOperationException if the specified command line
      * element is not supported.
      */

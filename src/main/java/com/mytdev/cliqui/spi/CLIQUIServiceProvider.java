@@ -28,17 +28,45 @@ import java.util.List;
  */
 public interface CLIQUIServiceProvider<P> {
 
+    /**
+     * @return the factory to create options UI
+     */
     OptionsUIFactory<P> getOptionsUIFactory();
 
+    /**
+     * @return the factory to create arguments UI
+     */
     ArgumentsUIFactory<P> getArgumentsUIFactory();
 
+    /**
+     * Factory to create options UI
+     *
+     * @param <P> the UI panel type
+     */
     public static interface OptionsUIFactory<P> {
 
+        /**
+         * Creates then returns the UI for the given options
+         *
+         * @param options the options to generate th UI from
+         * @return the options UI
+         */
         CommandLineElementsUI<Option, P> createUI(List<Option> options);
     }
 
+    /**
+     * Factory to create arguments UI
+     *
+     * @param <P> the UI panel type
+     */
     public static interface ArgumentsUIFactory<P> {
 
+        /**
+         * Creates then returns the UI for the given argument
+         *
+         * @param argument the argument to generate th UI from
+         * @return the argument UI
+         */
         CommandLineElementsUI<Argument, P> createUI(List<Argument> argument);
     }
 }

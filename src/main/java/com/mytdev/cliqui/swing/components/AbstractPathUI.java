@@ -18,7 +18,7 @@ package com.mytdev.cliqui.swing.components;
 import com.mytdev.cliqui.cli.CommandLineElement;
 import com.mytdev.cliqui.cli.constraints.PathExistsConstraint;
 import com.mytdev.cliqui.cli.constraints.PathFileExtensionConstraint;
-import com.mytdev.cliqui.cli.PathSelectionMode;
+import com.mytdev.cliqui.cli.constraints.PathSelectionMode;
 import com.mytdev.cliqui.cli.constraints.PathSelectionModeConstraint;
 import com.mytdev.cliqui.spi.AbstractCommandLineElementUI;
 import java.awt.event.ActionEvent;

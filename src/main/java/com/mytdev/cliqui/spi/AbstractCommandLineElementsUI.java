@@ -47,7 +47,6 @@ public abstract class AbstractCommandLineElementsUI<T extends CommandLineElement
             }
         }
         uis = Collections.unmodifiableMap(uisMap);
-        initPanel();
     }
 
     @Override
@@ -63,8 +62,6 @@ public abstract class AbstractCommandLineElementsUI<T extends CommandLineElement
     public final Collection<T> getCommandLineElements() {
         return commandLineElements;
     }
-
-    protected abstract void initPanel();
 
     /**
      * Creates then returns the given command line element UI. The UI component type is

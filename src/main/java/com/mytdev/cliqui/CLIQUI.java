@@ -21,25 +21,51 @@ import com.mytdev.cliqui.cli.Option;
 import com.mytdev.cliqui.spi.CLIQUIServiceProvider;
 import com.mytdev.cliqui.spi.CommandLineElementsUI;
 import javax.swing.JPanel;
-import lombok.Getter;
 
 /**
+ * Allows to generate options and arguments UI panels for a given CLI instance.
  *
  * @author Yann D'Isanto
  * @param <P> command line elements UI panel type
  */
-@Getter
 public final class CLIQUI<P> {
 
     private final CommandLineElementsUI<Option, P> optionsUI;
 
     private final CommandLineElementsUI<Argument, P> argumentsUI;
 
+    /**
+     * Creates a CLIQUI instance for the given service provider and the given
+     * cli.
+     *
+     * @param serviceProvider the CLIQUI service provider
+     * @param cli the cli to build the UI from
+     */
     public CLIQUI(CLIQUIServiceProvider<P> serviceProvider, CLI cli) {
         this.optionsUI = serviceProvider.getOptionsUIFactory().createUI(cli.getOptions());
         this.argumentsUI = serviceProvider.getArgumentsUIFactory().createUI(cli.getArguments());
     }
-    
+
+    /**
+     * @return the generated options panel UI.
+     */
+    public CommandLineElementsUI<Option, P> getOptionsUI() {
+        return optionsUI;
+    }
+
+    /**
+     * @return the generated arguments panel UI.
+     */
+    public CommandLineElementsUI<Argument, P> getArgumentsUI() {
+        return argumentsUI;
+    }
+
+    /**
+     * Creates then returns a Swing based CLIQUI instance for the given cli.
+     *
+     * @param cli the cli to build the UI from
+     * @return a CLIQUI instance
+     */
     public static CLIQUI<JPanel> swing(CLI cli) {
         return new CLIQUI<>(new SwingCLIQUIServiceProvider(), cli);
     }

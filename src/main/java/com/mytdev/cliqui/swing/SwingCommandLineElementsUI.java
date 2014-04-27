@@ -35,11 +35,11 @@ import javax.swing.SwingConstants;
  */
 public final class SwingCommandLineElementsUI<T extends CommandLineElement> extends AbstractCommandLineElementsUI<T, JPanel> {
 
-    private JPanel panel;
+    private final JPanel panel = new JPanel();
 
-    
     public SwingCommandLineElementsUI(CommandLineElementUIFactoryProvider<T, JComponent> factoryProvider, List<T> commandLineElements) {
         super(factoryProvider, commandLineElements);
+        initPanel();
     }
     
     @Override
@@ -47,9 +47,7 @@ public final class SwingCommandLineElementsUI<T extends CommandLineElement> exte
         return panel;
     }
 
-    @Override
-    protected void initPanel() {
-        panel = new JPanel();
+    private void initPanel() {
         if(commandLineElements.isEmpty()) {
             return;
         }

@@ -20,6 +20,7 @@ import java.util.Collection;
 import java.util.List;
 
 /**
+ * The UI for command line elements.
  *
  * @author Yann D'Isanto
  * @param <T> the command line element type
@@ -27,9 +28,18 @@ import java.util.List;
  */
 public interface CommandLineElementsUI<T extends CommandLineElement, P> {
 
+    /**
+     * @return the command line value from this UI
+     */
     List<String> getCommandLineValue();
-    
+
+    /**
+     * @return the command line elements of this UI
+     */
     Collection<T> getCommandLineElements();
-    
+
+    /**
+     * @return this UI panel
+     */
     P getPanel();
 }

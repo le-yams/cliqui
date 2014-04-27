@@ -16,7 +16,6 @@
 package com.mytdev.cliqui.cli.constraints;
 
 import com.mytdev.cliqui.cli.Constraint;
-import com.mytdev.cliqui.cli.PathSelectionMode;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

@@ -15,7 +15,7 @@
  */
 package com.mytdev.cliqui.reader;
 
-import com.mytdev.cliqui.cli.PathSelectionMode;
+import com.mytdev.cliqui.cli.constraints.PathSelectionMode;
 import com.mytdev.cliqui.cli.constraints.PathSelectionModeConstraint;
 import javax.json.JsonString;
 import javax.json.JsonValue;
