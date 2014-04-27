@@ -21,6 +21,7 @@ import com.mytdev.cliqui.cli.constraints.PathFileExtensionConstraint;
 import com.mytdev.cliqui.cli.constraints.PathSelectionMode;
 import com.mytdev.cliqui.cli.constraints.PathSelectionModeConstraint;
 import com.mytdev.cliqui.spi.AbstractCommandLineElementUI;
+import com.mytdev.cliqui.util.ValidatingFileChooser;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -31,7 +32,6 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -58,7 +58,7 @@ public abstract class AbstractPathUI<T extends CommandLineElement> extends Abstr
     protected final JButton browseButton = new JButton("Browse...");
 
     protected final JFileChooser fileChooser;
-    
+
     private final boolean pathMustExist;
 
     public AbstractPathUI(T commandLineElement) {
@@ -68,45 +68,37 @@ public abstract class AbstractPathUI<T extends CommandLineElement> extends Abstr
         field.setToolTipText(commandLineElement.getDescription());
         browseButton.addActionListener(this);
         final PathExistsConstraint pathExistsConstraint = commandLineElement
-            .getConstraint(PathExistsConstraint.class);
-        pathMustExist = pathExistsConstraint != null 
-            ? pathExistsConstraint.isPathExistsMandatory() 
-            : false;
+                .getConstraint(PathExistsConstraint.class);
+        pathMustExist = pathExistsConstraint != null
+                ? pathExistsConstraint.isPathExistsMandatory()
+                : false;
         field.setEditable(pathMustExist == false);
-        fileChooser = new JFileChooser() {
+        fileChooser = new ValidatingFileChooser(new ValidatingFileChooser.DefaultValidator() {
 
             @Override
-            public void approveSelection() {
-                final File file = getSelectedFile();
-                if(pathMustExist && file.exists() == false) {
-                    JOptionPane.showMessageDialog(
-                        fileChooser, 
-                        "the selected path does not denote an existing file or directory: " + file.toPath(), 
-                        "file or directory must exist", 
-                        JOptionPane.ERROR_MESSAGE);
-                } else {
-                    super.approveSelection();
+            public void validateFileSelection(File file) throws IllegalArgumentException {
+                if (pathMustExist && file.exists() == false) {
+                    throw new IllegalArgumentException("the selected path does not denote an existing file or directory: " + file.toPath());
                 }
             }
-            
-        };
-        
+        });
+
         fileChooser.setMultiSelectionEnabled(false);
         final PathSelectionModeConstraint selectionModeConstraint = commandLineElement
-            .getConstraint(PathSelectionModeConstraint.class);
+                .getConstraint(PathSelectionModeConstraint.class);
         fileChooser.setFileSelectionMode(selectionModeConstraint != null
-            ? SELECTION_MODES.get(selectionModeConstraint.getMode())
-            : JFileChooser.FILES_AND_DIRECTORIES);
+                ? SELECTION_MODES.get(selectionModeConstraint.getMode())
+                : JFileChooser.FILES_AND_DIRECTORIES);
         final PathFileExtensionConstraint extensionConstraint = commandLineElement
-            .getConstraint(PathFileExtensionConstraint.class);
-        if(extensionConstraint != null) {
+                .getConstraint(PathFileExtensionConstraint.class);
+        if (extensionConstraint != null) {
             final FileFilter extensionFileFilter = new FileNameExtensionFilter(
-                extensionConstraint.getDescription(), 
-                extensionConstraint.getExtensions().toArray(new String[0]));
+                    extensionConstraint.getDescription(),
+                    extensionConstraint.getExtensions().toArray(new String[0]));
             fileChooser.setFileFilter(extensionFileFilter);
             fileChooser.setAcceptAllFileFilterUsed(extensionConstraint.isStrict() == false);
         }
-        
+
     }
 
     @Override
@@ -114,7 +106,7 @@ public abstract class AbstractPathUI<T extends CommandLineElement> extends Abstr
         fileChooser.setSelectedFile(Paths.get(field.getText()).toFile());
         if (fileChooser.showDialog(browseButton, "Select") == JFileChooser.APPROVE_OPTION) {
             final File file = fileChooser.getSelectedFile();
-            if(pathMustExist && file.exists() == false) {
+            if (pathMustExist && file.exists() == false) {
             } else {
                 field.setText(file.toPath().toString());
             }

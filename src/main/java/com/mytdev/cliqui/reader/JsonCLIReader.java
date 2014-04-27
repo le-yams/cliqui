@@ -26,6 +26,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.json.JsonObject;
+import javax.json.JsonString;
 import javax.json.JsonValue;
 
 /**
@@ -36,9 +37,11 @@ public final class JsonCLIReader {
 
     /**
      * Builds a CLI instance from the given json object.
+     *
      * @param json the json object describing the cli
      * @return a CLI instance
-     * @throws IllegalArgumentException if the given cli json object is not valid
+     * @throws IllegalArgumentException if the given cli json object is not
+     * valid
      */
     public CLI read(JsonObject json) throws IllegalArgumentException {
         final String command = json.getString("command", null);
@@ -47,16 +50,23 @@ public final class JsonCLIReader {
         populateArguments(cli, json.getJsonObject("arguments"));
         return cli;
     }
-    
+
     private void populateOptions(CLIBuilder cli, JsonObject json) {
         if (json == null) {
             return;
         }
         for (Map.Entry<String, JsonValue> entry : json.entrySet()) {
-            try {
-                cli.options(parseOption(entry.getKey(), (JsonObject) entry.getValue()));
-            } catch (ClassCastException ex) {
-                throw new IllegalArgumentException("invalid option value", ex);
+            final JsonValue value = entry.getValue();
+            switch (value.getValueType()) {
+                case OBJECT:
+                    cli.options(parseOption(entry.getKey(), (JsonObject) entry.getValue()));
+                    break;
+                case STRING:
+                    final Option.Type type = Option.Type.valueOf(((JsonString) value).getString().toUpperCase());
+                    cli.options(new Option.Builder(entry.getKey(), type));
+                    break;
+                default:
+                    throw new IllegalArgumentException("invalid option value");
             }
         }
     }
@@ -66,10 +76,17 @@ public final class JsonCLIReader {
             return;
         }
         for (Map.Entry<String, JsonValue> entry : json.entrySet()) {
-            try {
-                cli.arguments(parseArgument(entry.getKey(), (JsonObject) entry.getValue()));
-            } catch (ClassCastException ex) {
-                throw new IllegalArgumentException("invalid argument value", ex);
+            final JsonValue value = entry.getValue();
+            switch (value.getValueType()) {
+                case OBJECT:
+                    cli.arguments(parseArgument(entry.getKey(), (JsonObject) entry.getValue()));
+                    break;
+                case STRING:
+                    final Argument.Type type = Argument.Type.valueOf(((JsonString) value).getString().toUpperCase());
+                    cli.arguments(new Argument.Builder(entry.getKey(), type));
+                    break;
+                default:
+                    throw new IllegalArgumentException("invalid argument value");
             }
         }
     }
