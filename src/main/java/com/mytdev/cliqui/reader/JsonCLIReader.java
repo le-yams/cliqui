@@ -92,7 +92,11 @@ public final class JsonCLIReader {
     }
 
     private Option.Builder parseOption(String name, JsonObject json) {
-        final Option.Type type = Option.Type.valueOf(json.getString("type").toUpperCase());
+        final String typeValue = json.getString("type", null);
+        if(typeValue == null) {
+            throw new IllegalArgumentException(name + " option type is missing");
+        }
+        final Option.Type type = Option.Type.valueOf(typeValue.toUpperCase());
         final Option.Builder option = new Option.Builder(name, type)
                 .label(json.getString("label", null))
                 .description(json.getString("description", null))
@@ -101,7 +105,11 @@ public final class JsonCLIReader {
     }
 
     private Argument.Builder parseArgument(String name, JsonObject json) {
-        final Argument.Type type = Argument.Type.valueOf(json.getString("type").toUpperCase());
+        final String typeValue = json.getString("type", null);
+        if(typeValue == null) {
+            throw new IllegalArgumentException(name + " argument type is missing");
+        }
+        final Argument.Type type = Argument.Type.valueOf(typeValue.toUpperCase());
         final Argument.Builder argument = new Argument.Builder(name, type)
                 .label(json.getString("label", null))
                 .description(json.getString("description", null))

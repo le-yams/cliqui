@@ -44,6 +44,9 @@ public final class PathFileExtensionConstraintParser implements ConstraintParser
         final boolean strict = value.getBoolean("strict", true);
         try {
             final JsonArray extensions = value.getJsonArray("extensions");
+            if(extensions == null) {
+                throw new IllegalArgumentException("extensions field is missing");
+            }
             return new PathFileExtensionConstraint(description, strict, parseExtensionsArray(extensions));
         } catch (ClassCastException ex) {
             throw new IllegalArgumentException("invalid extensions array", ex);
