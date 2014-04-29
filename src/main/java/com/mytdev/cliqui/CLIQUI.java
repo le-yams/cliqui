@@ -51,6 +51,9 @@ public final class CLIQUI<P> {
         this.argumentsUI = serviceProvider.getArgumentsUIFactory().createUI(cli.getArguments());
     }
 
+    /**
+     * @return the CLI instance this UI is about.
+     */
     public CLI getCLI() {
         return cli;
     }
