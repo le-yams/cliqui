@@ -34,6 +34,8 @@ public abstract class CommandLineElement {
     @NonNull
     private final String name;
 
+    private final boolean required;
+    
     @NonNull
     private final String label;
 
@@ -44,6 +46,7 @@ public abstract class CommandLineElement {
 
     CommandLineElement(Builder builder) {
         this.name = builder.name;
+        this.required = builder.required;
         this.label = builder.label != null ? builder.label : computeLabelFromName(builder.name);
         this.description = builder.description;
         for (Constraint constraint : (Set<Constraint>) builder.constraints) {
@@ -65,6 +68,8 @@ public abstract class CommandLineElement {
         @NonNull
         private final String name;
 
+        private boolean required = false;
+    
         private String label;
 
         private String description;
@@ -87,6 +92,11 @@ public abstract class CommandLineElement {
             return (B) this;
         }
 
+        public B required(boolean required) {
+            this.required = required;
+            return (B) this;
+        }
+        
         /**
          * Sets the description to display in UI ({@code null } means no
          * description)

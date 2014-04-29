@@ -20,7 +20,6 @@ import com.mytdev.cliqui.cli.constraints.PathExistsConstraint;
 import com.mytdev.cliqui.cli.constraints.PathFileExtensionConstraint;
 import com.mytdev.cliqui.cli.constraints.PathSelectionMode;
 import com.mytdev.cliqui.cli.constraints.PathSelectionModeConstraint;
-import com.mytdev.cliqui.spi.AbstractCommandLineElementUI;
 import com.mytdev.cliqui.util.ValidatingFileChooser;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -33,6 +32,8 @@ import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -41,7 +42,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  * @author Yann D'Isanto
  * @param <T>
  */
-public abstract class AbstractPathUI<T extends CommandLineElement> extends AbstractCommandLineElementUI<T, JComponent> implements ActionListener {
+public abstract class AbstractPathUI<T extends CommandLineElement> extends AbstractSwingCommandLineElementUI<T> implements ActionListener {
 
     private static final Map<PathSelectionMode, Integer> SELECTION_MODES = new EnumMap<>(PathSelectionMode.class);
 
@@ -98,7 +99,29 @@ public abstract class AbstractPathUI<T extends CommandLineElement> extends Abstr
             fileChooser.setFileFilter(extensionFileFilter);
             fileChooser.setAcceptAllFileFilterUsed(extensionConstraint.isStrict() == false);
         }
+        field.getDocument().addDocumentListener(new DocumentListener() {
 
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                getChangeSupport().fireChange();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                getChangeSupport().fireChange();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {}
+        });
+    }
+
+    @Override
+    public void validate() throws IllegalArgumentException {
+        final CommandLineElement cle = getCommandLineElement();
+        if(cle.isRequired() && field.getText().isEmpty()) {
+            throw new IllegalArgumentException("missing required field: " + cle.getLabel());
+        }
     }
 
     @Override

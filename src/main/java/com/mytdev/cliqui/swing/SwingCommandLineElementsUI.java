@@ -27,18 +27,23 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.LayoutStyle;
 import javax.swing.SwingConstants;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 /**
  *
  * @author Yann D'Isanto
  * @param <T>
  */
-public final class SwingCommandLineElementsUI<T extends CommandLineElement> extends AbstractCommandLineElementsUI<T, JPanel> {
+public final class SwingCommandLineElementsUI<T extends CommandLineElement> extends AbstractCommandLineElementsUI<T, JPanel> implements ChangeListener {
+
+    private final SwingChangeSupport changeSupport;
 
     private final JPanel panel = new JPanel();
 
     public SwingCommandLineElementsUI(CommandLineElementUIFactoryProvider<T, JComponent> factoryProvider, List<T> commandLineElements) {
         super(factoryProvider, commandLineElements);
+        changeSupport = new SwingChangeSupport(this);
         initPanel();
     }
     
@@ -47,6 +52,24 @@ public final class SwingCommandLineElementsUI<T extends CommandLineElement> exte
         return panel;
     }
 
+    @Override
+    public void validate() throws IllegalArgumentException {
+        for (CommandLineElementUI<T, ?> commandLineElementUI : uis.values()) {
+            commandLineElementUI.validate();
+        }
+    }
+
+    @Override
+    public SwingChangeSupport getChangeSupport() {
+        return changeSupport;
+    }
+
+    @Override
+    public void stateChanged(ChangeEvent e) {
+        getChangeSupport().fireChange();
+    }
+
+    
     private void initPanel() {
         if(commandLineElements.isEmpty()) {
             return;
@@ -59,6 +82,7 @@ public final class SwingCommandLineElementsUI<T extends CommandLineElement> exte
         GroupLayout.ParallelGroup noLabelFieldsGroup = null;
         for (T commandLineElement : commandLineElements) {
             final CommandLineElementUI<T, JComponent> paramUI = (CommandLineElementUI<T, JComponent>) uis.get(commandLineElement);
+            ((SwingChangeSupport) paramUI.getChangeSupport()).addListener(this);
             final Component label = paramUI.getLabelComponent();
             final Component field = paramUI.getFieldComponent();
             final Component fieldSuffix = paramUI.getFieldSuffixComponent();

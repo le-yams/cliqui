@@ -31,7 +31,7 @@ public final class OptionUIFactoryProvider implements CommandLineElementUIFactor
     private static final Map<Option.Type, CommandLineElementUIFactory<Option, JComponent>> OPTION_UI_FACTORIES = new EnumMap<>(Option.Type.class);
 
     static {
-        OPTION_UI_FACTORIES.put(Option.Type.FLAG, new BooleanOptionUIFactory());
+        OPTION_UI_FACTORIES.put(Option.Type.FLAG, new FlagOptionUIFactory());
         OPTION_UI_FACTORIES.put(Option.Type.TEXT, new TextOptionUIFactory());
         OPTION_UI_FACTORIES.put(Option.Type.PATH, new PathOptionUIFactory());
         OPTION_UI_FACTORIES.put(Option.Type.PASSWORD, new PasswordOptionUIFactory());

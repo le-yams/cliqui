@@ -16,7 +16,8 @@
 package com.mytdev.cliqui.swing.components;
 
 import com.mytdev.cliqui.cli.CommandLineElement;
-import com.mytdev.cliqui.spi.AbstractCommandLineElementUI;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JCheckBox;
@@ -27,14 +28,26 @@ import javax.swing.JComponent;
  * @author Yann D'Isanto
  * @param <T>
  */
-public final class BooleanOptionUI <T extends CommandLineElement> extends AbstractCommandLineElementUI<T, JComponent> {
+public final class FlagOptionUI <T extends CommandLineElement> extends AbstractSwingCommandLineElementUI<T> {
 
     private final JCheckBox checkBox = new JCheckBox();
 
-    public BooleanOptionUI(T commandLineElement) {
+    public FlagOptionUI(T commandLineElement) {
         super(commandLineElement);
         checkBox.setText(commandLineElement.getLabel());
         checkBox.setToolTipText(commandLineElement.getDescription());
+        if(commandLineElement.isRequired()) {
+            checkBox.setSelected(true);
+            checkBox.setEnabled(false);
+        } else {
+            checkBox.addActionListener(new ActionListener() {
+
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    getChangeSupport().fireChange();
+                }
+            });
+        }
     }
 
     @Override

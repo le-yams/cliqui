@@ -98,6 +98,7 @@ public final class JsonCLIReader {
         }
         final Option.Type type = Option.Type.valueOf(typeValue.toUpperCase());
         final Option.Builder option = new Option.Builder(name, type)
+                .required(json.getBoolean("required", false))
                 .label(json.getString("label", null))
                 .description(json.getString("description", null))
                 .constraints(parseConstraints(json.getJsonObject("constraints")));
@@ -111,6 +112,7 @@ public final class JsonCLIReader {
         }
         final Argument.Type type = Argument.Type.valueOf(typeValue.toUpperCase());
         final Argument.Builder argument = new Argument.Builder(name, type)
+                .required(json.getBoolean("required", false))
                 .label(json.getString("label", null))
                 .description(json.getString("description", null))
                 .constraints(parseConstraints(json.getJsonObject("constraints")));

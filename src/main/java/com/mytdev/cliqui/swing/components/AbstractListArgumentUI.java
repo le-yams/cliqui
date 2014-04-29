@@ -16,7 +16,7 @@
 package com.mytdev.cliqui.swing.components;
 
 import com.mytdev.cliqui.cli.Argument;
-import com.mytdev.cliqui.spi.AbstractCommandLineElementUI;
+import com.mytdev.cliqui.cli.CommandLineElement;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -29,13 +29,15 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.event.ListDataEvent;
+import javax.swing.event.ListDataListener;
 
 /**
  *
  * @author Yann D'Isanto
  * @param <T> list element type
  */
-public abstract class AbstractListArgumentUI<T> extends AbstractCommandLineElementUI<Argument, JComponent> {
+public abstract class AbstractListArgumentUI<T> extends AbstractSwingCommandLineElementUI<Argument> {
 
     protected final DefaultListModel<T> listModel = new DefaultListModel<>();
 
@@ -106,9 +108,35 @@ public abstract class AbstractListArgumentUI<T> extends AbstractCommandLineEleme
                 }
             }
         });
+        listModel.addListDataListener(new ListDataListener() {
+
+            @Override
+            public void intervalAdded(ListDataEvent e) {
+                getChangeSupport().fireChange();
+            }
+
+            @Override
+            public void intervalRemoved(ListDataEvent e) {
+                getChangeSupport().fireChange();
+            }
+
+            @Override
+            public void contentsChanged(ListDataEvent e) {
+                getChangeSupport().fireChange();
+            }
+        });
     }
 
     protected abstract void addButtonActionPerformed(ActionEvent e);
+
+    
+    @Override
+    public void validate() throws IllegalArgumentException {
+        final CommandLineElement cle = getCommandLineElement();
+        if (cle.isRequired() && listModel.isEmpty()) {
+            throw new IllegalArgumentException("missing required field: " + cle.getLabel());
+        }
+    }
 
     @Override
     public final List<String> getCommandLineValue() {

@@ -29,15 +29,31 @@ import java.util.List;
 public interface CommandLineElementsUI<T extends CommandLineElement, P> {
 
     /**
-     * @return the command line value from this UI
-     */
-    List<String> getCommandLineValue();
-
-    /**
      * @return the command line elements of this UI
      */
     Collection<T> getCommandLineElements();
 
+    /**
+     * @return the command line value from this UI
+     * @throws IllegalArgumentException if missing required input or if
+     * constraint violation
+     */
+    List<String> getCommandLineValue() throws IllegalArgumentException;
+
+    /**
+     * Validates the element UIs.
+     *
+     * @throws IllegalArgumentException if missing required input or if
+     * constraint violation
+     * @see CommandLineElementUI#validate() 
+     */
+    void validate() throws IllegalArgumentException;
+
+    /**
+     * @return this UI change support.
+     */
+    ChangeSupport<?> getChangeSupport();
+    
     /**
      * @return this UI panel
      */

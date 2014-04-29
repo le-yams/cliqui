@@ -16,7 +16,6 @@
 package com.mytdev.cliqui.swing.components;
 
 import com.mytdev.cliqui.cli.CommandLineElement;
-import com.mytdev.cliqui.spi.AbstractCommandLineElementUI;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -25,20 +24,22 @@ import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPasswordField;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 /**
  *
  * @author Yann D'Isanto
  * @param <T>
  */
-public final class PasswordOptionUI <T extends CommandLineElement> extends AbstractCommandLineElementUI<T, JComponent> implements ActionListener {
+public final class PasswordOptionUI<T extends CommandLineElement> extends AbstractSwingCommandLineElementUI<T> {
 
     private final JLabel label = new JLabel();
 
     private final JPasswordField field = new JPasswordField();
-    
+
     private final JCheckBox displayPasswordCheckBox = new JCheckBox("display");
-    
+
     private final char defaultPasswordEchoChar;
 
     public PasswordOptionUI(T commandLineElement) {
@@ -47,15 +48,40 @@ public final class PasswordOptionUI <T extends CommandLineElement> extends Abstr
         label.setToolTipText(commandLineElement.getDescription());
         field.setToolTipText(commandLineElement.getDescription());
         defaultPasswordEchoChar = field.getEchoChar();
-        displayPasswordCheckBox.addActionListener(this);
+        displayPasswordCheckBox.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                final char echoChar = displayPasswordCheckBox.isSelected()
+                        ? 0
+                        : defaultPasswordEchoChar;
+                field.setEchoChar(echoChar);
+            }
+        });
+        field.getDocument().addDocumentListener(new DocumentListener() {
+
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                getChangeSupport().fireChange();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                getChangeSupport().fireChange();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+            }
+        });
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
-        final char echoChar = displayPasswordCheckBox.isSelected()
-                ? 0
-                : defaultPasswordEchoChar;
-        field.setEchoChar(echoChar);
+    public void validate() throws IllegalArgumentException {
+        final CommandLineElement cle = getCommandLineElement();
+        if (cle.isRequired() && field.getPassword().length == 0) {
+            throw new IllegalArgumentException("missing required field: " + cle.getLabel());
+        }
     }
 
     @Override
@@ -68,7 +94,7 @@ public final class PasswordOptionUI <T extends CommandLineElement> extends Abstr
         }
         return cli;
     }
-    
+
     @Override
     public JComponent getLabelComponent() {
         return label;

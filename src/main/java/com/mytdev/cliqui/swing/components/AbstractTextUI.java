@@ -16,10 +16,11 @@
 package com.mytdev.cliqui.swing.components;
 
 import com.mytdev.cliqui.cli.CommandLineElement;
-import com.mytdev.cliqui.spi.AbstractCommandLineElementUI;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.text.DocumentFilter;
 import javax.swing.text.PlainDocument;
 
@@ -28,7 +29,7 @@ import javax.swing.text.PlainDocument;
  * @author Yann D'Isanto
  * @param <T>
  */
-public abstract class AbstractTextUI<T extends CommandLineElement> extends AbstractCommandLineElementUI<T, JComponent> {
+public abstract class AbstractTextUI<T extends CommandLineElement> extends AbstractSwingCommandLineElementUI<T> {
 
     protected final JLabel label = new JLabel();
 
@@ -47,6 +48,30 @@ public abstract class AbstractTextUI<T extends CommandLineElement> extends Abstr
         label.setText(commandLineElement.getLabel());
         label.setToolTipText(commandLineElement.getDescription());
         field.setToolTipText(commandLineElement.getDescription());
+        field.getDocument().addDocumentListener(new DocumentListener() {
+
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                getChangeSupport().fireChange();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                getChangeSupport().fireChange();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+            }
+        });
+    }
+
+    @Override
+    public void validate() throws IllegalArgumentException {
+        final CommandLineElement cle = getCommandLineElement();
+        if (cle.isRequired() && field.getText().isEmpty()) {
+            throw new IllegalArgumentException("missing required field: " + cle.getLabel());
+        }
     }
 
     @Override

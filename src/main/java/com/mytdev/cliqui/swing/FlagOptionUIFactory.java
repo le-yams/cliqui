@@ -15,7 +15,7 @@
  */
 package com.mytdev.cliqui.swing;
 
-import com.mytdev.cliqui.swing.components.BooleanOptionUI;
+import com.mytdev.cliqui.swing.components.FlagOptionUI;
 import com.mytdev.cliqui.cli.Option;
 import com.mytdev.cliqui.spi.CommandLineElementUI;
 import com.mytdev.cliqui.spi.CommandLineElementUIFactory;
@@ -25,10 +25,10 @@ import javax.swing.JComponent;
  *
  * @author Yann D'Isanto
  */
-public class BooleanOptionUIFactory implements CommandLineElementUIFactory<Option, JComponent> {
+public class FlagOptionUIFactory implements CommandLineElementUIFactory<Option, JComponent> {
 
     @Override
     public CommandLineElementUI<Option, JComponent> createUI(Option option) {
-        return new BooleanOptionUI(option);
+        return new FlagOptionUI(option);
     }
 }

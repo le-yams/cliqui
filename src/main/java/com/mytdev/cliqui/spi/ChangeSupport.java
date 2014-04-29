@@ -15,20 +15,16 @@
  */
 package com.mytdev.cliqui.spi;
 
-import com.mytdev.cliqui.cli.CommandLineElement;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-
 /**
  *
  * @author Yann D'Isanto
- * @param <T> the command line element type
- * @param <C> the command line element UI component type
  */
-@AllArgsConstructor
-public abstract class AbstractCommandLineElementUI<T extends CommandLineElement, C> implements CommandLineElementUI<T, C> {
+public interface ChangeSupport<L> {
 
-    @Getter
-    private final T commandLineElement;
+    void addListener(L listener);
 
+    void fireChange();
+
+    void removeListener(L listener);
+    
 }

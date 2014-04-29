@@ -30,11 +30,26 @@ public interface CommandLineElementUI<T extends CommandLineElement, C> {
      * @return this UI command line element
      */
     T getCommandLineElement();
+
+    /**
+     * Validates the user input according to constraints
+     *
+     * @throws IllegalArgumentException if no user input when required or if
+     * constraint violation
+     */
+    void validate() throws IllegalArgumentException;
+    
+    /**
+     * @return this UI change support.
+     */
+    ChangeSupport<?> getChangeSupport();
     
     /**
      * @return this element command line value
+     * @throws IllegalArgumentException if no user input when required or if
+     * constraint violation
      */
-    List<String> getCommandLineValue();
+    List<String> getCommandLineValue() throws IllegalArgumentException;
 
     /**
      * Returns the component to be placed on the left with no horizontal fill.
