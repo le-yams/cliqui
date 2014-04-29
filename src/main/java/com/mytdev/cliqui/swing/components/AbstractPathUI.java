@@ -60,8 +60,6 @@ public abstract class AbstractPathUI<T extends CommandLineElement> extends Abstr
 
     protected final JFileChooser fileChooser;
 
-    private final boolean pathMustExist;
-
     public AbstractPathUI(T commandLineElement) {
         super(commandLineElement);
         label.setText(commandLineElement.getLabel());
@@ -70,7 +68,7 @@ public abstract class AbstractPathUI<T extends CommandLineElement> extends Abstr
         browseButton.addActionListener(this);
         final PathExistsConstraint pathExistsConstraint = commandLineElement
                 .getConstraint(PathExistsConstraint.class);
-        pathMustExist = pathExistsConstraint != null
+        final boolean pathMustExist = pathExistsConstraint != null
                 ? pathExistsConstraint.isPathExistsMandatory()
                 : false;
         field.setEditable(pathMustExist == false);
@@ -83,7 +81,6 @@ public abstract class AbstractPathUI<T extends CommandLineElement> extends Abstr
                 }
             }
         });
-
         fileChooser.setMultiSelectionEnabled(false);
         final PathSelectionModeConstraint selectionModeConstraint = commandLineElement
                 .getConstraint(PathSelectionModeConstraint.class);
@@ -112,14 +109,15 @@ public abstract class AbstractPathUI<T extends CommandLineElement> extends Abstr
             }
 
             @Override
-            public void changedUpdate(DocumentEvent e) {}
+            public void changedUpdate(DocumentEvent e) {
+            }
         });
     }
 
     @Override
     public void validate() throws IllegalArgumentException {
         final CommandLineElement cle = getCommandLineElement();
-        if(cle.isRequired() && field.getText().isEmpty()) {
+        if (cle.isRequired() && field.getText().isEmpty()) {
             throw new IllegalArgumentException("missing required field: " + cle.getLabel());
         }
     }
@@ -129,10 +127,7 @@ public abstract class AbstractPathUI<T extends CommandLineElement> extends Abstr
         fileChooser.setSelectedFile(Paths.get(field.getText()).toFile());
         if (fileChooser.showDialog(browseButton, "Select") == JFileChooser.APPROVE_OPTION) {
             final File file = fileChooser.getSelectedFile();
-            if (pathMustExist && file.exists() == false) {
-            } else {
-                field.setText(file.toPath().toString());
-            }
+            field.setText(file.toPath().toString());
         }
     }
 

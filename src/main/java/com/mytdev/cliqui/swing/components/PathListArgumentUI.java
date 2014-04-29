@@ -16,8 +16,10 @@
 package com.mytdev.cliqui.swing.components;
 
 import com.mytdev.cliqui.cli.Argument;
+import com.mytdev.cliqui.cli.constraints.PathExistsConstraint;
 import com.mytdev.cliqui.cli.constraints.PathSelectionMode;
 import com.mytdev.cliqui.cli.constraints.PathSelectionModeConstraint;
+import com.mytdev.cliqui.util.ValidatingFileChooser;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.io.File;
@@ -40,10 +42,26 @@ public final class PathListArgumentUI extends AbstractListArgumentUI<Path> {
         SELECTION_MODES.put(PathSelectionMode.DIRECTORIES_ONLY, JFileChooser.DIRECTORIES_ONLY);
     }
 
-    protected final JFileChooser fileChooser = new JFileChooser();
+    protected final JFileChooser fileChooser;
 
     public PathListArgumentUI(Argument commandLineElement) {
         super(commandLineElement);
+        
+        final PathExistsConstraint pathExistsConstraint = commandLineElement
+                .getConstraint(PathExistsConstraint.class);
+        final boolean pathMustExist = pathExistsConstraint != null
+                ? pathExistsConstraint.isPathExistsMandatory()
+                : false;
+        fileChooser = new ValidatingFileChooser(new ValidatingFileChooser.DefaultValidator() {
+
+            @Override
+            public void validateFileSelection(File file) throws IllegalArgumentException {
+                if (pathMustExist && file.exists() == false) {
+                    throw new IllegalArgumentException("the selected path does not denote an existing file or directory: " + file.toPath());
+                }
+            }
+        });
+        fileChooser.setMultiSelectionEnabled(false);
         final PathSelectionModeConstraint selectionModeConstraint = commandLineElement.getConstraint(PathSelectionModeConstraint.class);
         fileChooser.setFileSelectionMode(selectionModeConstraint != null
             ? SELECTION_MODES.get(selectionModeConstraint.getMode())
