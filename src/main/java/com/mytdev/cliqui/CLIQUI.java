@@ -20,6 +20,8 @@ import com.mytdev.cliqui.cli.Argument;
 import com.mytdev.cliqui.cli.Option;
 import com.mytdev.cliqui.spi.CLIQUIServiceProvider;
 import com.mytdev.cliqui.spi.CommandLineElementsUI;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JPanel;
 
 /**
@@ -29,6 +31,8 @@ import javax.swing.JPanel;
  * @param <P> command line elements UI panel type
  */
 public final class CLIQUI<P> {
+
+    private final CLI cli;
 
     private final CommandLineElementsUI<Option, P> optionsUI;
 
@@ -42,8 +46,20 @@ public final class CLIQUI<P> {
      * @param cli the cli to build the UI from
      */
     public CLIQUI(CLIQUIServiceProvider<P> serviceProvider, CLI cli) {
+        this.cli = cli;
         this.optionsUI = serviceProvider.getOptionsUIFactory().createUI(cli.getOptions());
         this.argumentsUI = serviceProvider.getArgumentsUIFactory().createUI(cli.getArguments());
+    }
+
+    /**
+     * @return the command line value from the UI.
+     */
+    public List<String> getCommandLineValue() {
+        final List<String> commandLine = new ArrayList<>();
+        commandLine.add(cli.getCommand());
+        commandLine.addAll(optionsUI.getCommandLineValue());
+        commandLine.addAll(argumentsUI.getCommandLineValue());
+        return commandLine;
     }
 
     /**
@@ -67,6 +83,9 @@ public final class CLIQUI<P> {
      * @return a CLIQUI instance
      */
     public static CLIQUI<JPanel> swing(CLI cli) {
-        return new CLIQUI<>(new SwingCLIQUIServiceProvider(), cli);
+        return new CLIQUI<>(SWING_PROVIDER, cli);
     }
+
+    private static final SwingCLIQUIServiceProvider SWING_PROVIDER = new SwingCLIQUIServiceProvider();
+
 }

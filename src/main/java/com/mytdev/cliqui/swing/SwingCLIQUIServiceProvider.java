@@ -23,8 +23,6 @@ import com.mytdev.cliqui.spi.CLIQUIServiceProvider;
 import com.mytdev.cliqui.spi.CLIQUIServiceProvider.ArgumentsUIFactory;
 import com.mytdev.cliqui.spi.CLIQUIServiceProvider.OptionsUIFactory;
 import com.mytdev.cliqui.spi.CommandLineElementsUI;
-import com.mytdev.cliqui.swing.ArgumentUIFactoryProvider;
-import com.mytdev.cliqui.swing.OptionUIFactoryProvider;
 import java.util.List;
 import javax.swing.JPanel;
 

@@ -35,8 +35,6 @@ public interface CommandLineElementsUI<T extends CommandLineElement, P> {
 
     /**
      * @return the command line value from this UI
-     * @throws IllegalArgumentException if missing required input or if
-     * constraint violation
      */
     List<String> getCommandLineValue();
 
