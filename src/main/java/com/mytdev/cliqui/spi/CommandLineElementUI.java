@@ -46,10 +46,8 @@ public interface CommandLineElementUI<T extends CommandLineElement, C> {
     
     /**
      * @return this element command line value
-     * @throws IllegalArgumentException if no user input when required or if
-     * constraint violation
      */
-    List<String> getCommandLineValue() throws IllegalArgumentException;
+    List<String> getCommandLineValue();
 
     /**
      * Returns the component to be placed on the left with no horizontal fill.

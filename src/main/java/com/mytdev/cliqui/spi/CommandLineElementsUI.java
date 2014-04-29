@@ -38,7 +38,7 @@ public interface CommandLineElementsUI<T extends CommandLineElement, P> {
      * @throws IllegalArgumentException if missing required input or if
      * constraint violation
      */
-    List<String> getCommandLineValue() throws IllegalArgumentException;
+    List<String> getCommandLineValue();
 
     /**
      * Validates the element UIs.
