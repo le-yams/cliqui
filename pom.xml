@@ -8,7 +8,7 @@
     </parent>
     <groupId>com.mytdev</groupId>
     <artifactId>cliqui</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.1</version>
     <packaging>jar</packaging>
     <name>CLI Quick UI</name>
     
