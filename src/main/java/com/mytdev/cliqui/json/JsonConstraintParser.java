@@ -13,28 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package com.mytdev.cliqui.json;
 
-package com.mytdev.cliqui.reader;
-
-import com.mytdev.cliqui.cli.constraints.IntMaxConstraint;
-import javax.json.JsonNumber;
+import com.mytdev.cliqui.cli.Constraint;
 import javax.json.JsonValue;
-import javax.json.JsonValue.ValueType;
 
 /**
  *
  * @author Yann D'Isanto
+ * @param <C> the constraint
  */
-public final class IntMaxConstraintParser implements ConstraintParser<IntMaxConstraint> {
+public interface JsonConstraintParser<C extends Constraint> {
 
-    @Override
-    public IntMaxConstraint parse(JsonValue json) {
-        final ValueType valueType = json.getValueType();
-        if(valueType != ValueType.NUMBER) {
-            throw new IllegalArgumentException("invalid max value");
-        }
-        final JsonNumber value = (JsonNumber) json;
-        return new IntMaxConstraint(value.intValue());
-    }
-    
+    C parse(JsonValue json) throws IllegalArgumentException;
 }

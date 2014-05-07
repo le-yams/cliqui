@@ -13,35 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mytdev.cliqui;
+package com.mytdev.cliqui.cli.spi;
 
-import com.mytdev.cliqui.cli.Argument;
-import com.mytdev.cliqui.cli.Option;
-import java.util.List;
+import com.mytdev.cliqui.cli.CLI;
 
 /**
- * 
+ *
  * @author Yann D'Isanto
  */
-public interface CLI {
+public interface CLIBuilderFactory {
 
     /**
-     * @return this CLI command
-     */
-    String getCommand();
-    
-    /**
-     * Returns this CLI options list
+     * Creates then returns a cli builder instance.
      *
-     * @return a List instance
+     * @return a CLI.Builder instance.
      */
-    List<Option> getOptions();
-    
-    /**
-     * Returns this CLI arguments list
-     *
-     * @return a List instance
-     */
-    List<Argument> getArguments();
-    
+    CLI.Builder create();
+
 }

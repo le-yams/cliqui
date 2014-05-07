@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-package com.mytdev.cliqui.reader;
+package com.mytdev.cliqui.json.constraint_parsers;
 
-import com.mytdev.cliqui.cli.constraints.IntMinConstraint;
+import com.mytdev.cliqui.cli.constraints.IntMaxConstraint;
+import com.mytdev.cliqui.json.JsonConstraintParser;
 import javax.json.JsonNumber;
 import javax.json.JsonValue;
 import javax.json.JsonValue.ValueType;
@@ -25,16 +26,16 @@ import javax.json.JsonValue.ValueType;
  *
  * @author Yann D'Isanto
  */
-public final class IntMinConstraintParser implements ConstraintParser<IntMinConstraint> {
+public final class IntMaxConstraintParser implements JsonConstraintParser<IntMaxConstraint> {
 
     @Override
-    public IntMinConstraint parse(JsonValue json) {
+    public IntMaxConstraint parse(JsonValue json) {
         final ValueType valueType = json.getValueType();
         if(valueType != ValueType.NUMBER) {
-            throw new IllegalArgumentException("invalid min value");
+            throw new IllegalArgumentException("invalid max value");
         }
         final JsonNumber value = (JsonNumber) json;
-        return new IntMinConstraint(value.intValue());
+        return new IntMaxConstraint(value.intValue());
     }
     
 }

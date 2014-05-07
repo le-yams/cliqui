@@ -17,6 +17,7 @@ package com.mytdev.cliqui;
 
 import com.mytdev.cliqui.swing.SwingCLIQUIServiceProvider;
 import com.mytdev.cliqui.cli.Argument;
+import com.mytdev.cliqui.cli.CLI;
 import com.mytdev.cliqui.cli.Option;
 import com.mytdev.cliqui.spi.CLIQUIServiceProvider;
 import com.mytdev.cliqui.spi.CommandLineElementsUI;
@@ -81,6 +82,18 @@ public final class CLIQUI<P> {
      */
     public CommandLineElementsUI<Argument, P> getArgumentsUI() {
         return argumentsUI;
+    }
+
+    /**
+     * Validates the options and arguments UIs.
+     *
+     * @throws IllegalArgumentException if missing required input or if
+     * constraint violation
+     * @see CommandLineElementsUI#validate() 
+     */
+    public void validate() throws IllegalArgumentException {
+        optionsUI.validate();
+        argumentsUI.validate();
     }
 
     /**

@@ -13,16 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mytdev.cliqui.reader;
+package com.mytdev.cliqui.json;
 
 import com.mytdev.cliqui.cli.Argument;
+import com.mytdev.cliqui.cli.CLI;
 import com.mytdev.cliqui.cli.Constraint;
 import com.mytdev.cliqui.cli.Option;
-import com.mytdev.cliqui.CLI;
-import com.mytdev.cliqui.CLIBuilder;
+import com.mytdev.cliqui.cli.spi.CLIBuilderFactory;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.json.JsonObject;
@@ -33,25 +32,60 @@ import javax.json.JsonValue;
  *
  * @author Yann D'Isanto
  */
-public final class JsonCLIReader {
+public final class JsonCLIBuilderFactory implements CLIBuilderFactory {
+
+    private final JsonConstraintParserProvider constraintParserProvider = new ProxyJsonConstraintParserProvider();
 
     /**
-     * Builds a CLI instance from the given json object.
-     *
-     * @param json the json object describing the cli
-     * @return a CLI instance
-     * @throws IllegalArgumentException if the given cli json object is not
-     * valid
+     * The json object to create cli builder from
      */
-    public CLI read(JsonObject json) throws IllegalArgumentException {
-        final String command = json.getString("command", null);
-        final CLIBuilder cli = new CLIBuilder(command);
-        populateOptions(cli, json.getJsonObject("options"));
-        populateArguments(cli, json.getJsonObject("arguments"));
-        return cli;
+    private JsonObject json;
+
+    public JsonCLIBuilderFactory() {
     }
 
-    private void populateOptions(CLIBuilder cli, JsonObject json) {
+    public JsonCLIBuilderFactory(JsonObject json) {
+        this.json = json;
+    }
+
+    /**
+     * @return the json object this factory creates cli builder from
+     */
+    public JsonObject getJson() {
+        return json;
+    }
+
+    /**
+     * Sets the json object this factory creates cli builder from
+     *
+     * @param json a valid cli json object. If it doesn't meet cli json
+     * requirements, invoking this factory {@code create() } method will throw
+     * an IllegalArgumentException
+     */
+    public void setJson(JsonObject json) {
+        this.json = json;
+    }
+
+    /**
+     * Creates a cli builder instance from this factory underlying cli json
+     * object.
+     *
+     * @return a CLI.Builder instance
+     * @throws NullPointerException if this factory underlying cli json object
+     * is not valid
+     * @throws IllegalArgumentException if this factory underlying cli json
+     * object is not valid
+     */
+    @Override
+    public CLI.Builder create() throws IllegalArgumentException {
+        final String command = json.getString("command", null);
+        final CLI.Builder builder = new CLI.Builder(command);
+        populateOptions(builder, json.getJsonObject("options"));
+        populateArguments(builder, json.getJsonObject("arguments"));
+        return builder;
+    }
+
+    private void populateOptions(CLI.Builder cli, JsonObject json) {
         if (json == null) {
             return;
         }
@@ -71,7 +105,7 @@ public final class JsonCLIReader {
         }
     }
 
-    private void populateArguments(CLIBuilder cli, JsonObject json) {
+    private void populateArguments(CLI.Builder cli, JsonObject json) {
         if (json == null) {
             return;
         }
@@ -93,29 +127,29 @@ public final class JsonCLIReader {
 
     private Option.Builder parseOption(String name, JsonObject json) {
         final String typeValue = json.getString("type", null);
-        if(typeValue == null) {
+        if (typeValue == null) {
             throw new IllegalArgumentException(name + " option type is missing");
         }
         final Option.Type type = Option.Type.valueOf(typeValue.toUpperCase());
         final Option.Builder option = new Option.Builder(name, type)
-                .required(json.getBoolean("required", false))
-                .label(json.getString("label", null))
-                .description(json.getString("description", null))
-                .constraints(parseConstraints(json.getJsonObject("constraints")));
+            .required(json.getBoolean("required", false))
+            .label(json.getString("label", null))
+            .description(json.getString("description", null))
+            .constraints(parseConstraints(json.getJsonObject("constraints")));
         return option;
     }
 
     private Argument.Builder parseArgument(String name, JsonObject json) {
         final String typeValue = json.getString("type", null);
-        if(typeValue == null) {
+        if (typeValue == null) {
             throw new IllegalArgumentException(name + " argument type is missing");
         }
         final Argument.Type type = Argument.Type.valueOf(typeValue.toUpperCase());
         final Argument.Builder argument = new Argument.Builder(name, type)
-                .required(json.getBoolean("required", false))
-                .label(json.getString("label", null))
-                .description(json.getString("description", null))
-                .constraints(parseConstraints(json.getJsonObject("constraints")));
+            .required(json.getBoolean("required", false))
+            .label(json.getString("label", null))
+            .description(json.getString("description", null))
+            .constraints(parseConstraints(json.getJsonObject("constraints")));
         return argument;
     }
 
@@ -125,22 +159,12 @@ public final class JsonCLIReader {
         }
         final List<Constraint> constraints = new ArrayList<>();
         for (Map.Entry<String, JsonValue> entry : json.entrySet()) {
-            final ConstraintParser constraintParser = CONSTRAINT_PARSERS.get(entry.getKey());
+            final JsonConstraintParser constraintParser = constraintParserProvider.getParser(entry.getKey());
             if (constraintParser == null) {
                 throw new IllegalArgumentException("unknown constraint");
             }
             constraints.add(constraintParser.parse(entry.getValue()));
         }
         return constraints;
-    }
-
-    private static final Map<String, ConstraintParser> CONSTRAINT_PARSERS = new HashMap<>();
-
-    static {
-        CONSTRAINT_PARSERS.put("min", new IntMinConstraintParser());
-        CONSTRAINT_PARSERS.put("max", new IntMaxConstraintParser());
-        CONSTRAINT_PARSERS.put("pathMustExist", new PathExistsConstraintParser());
-        CONSTRAINT_PARSERS.put("pathSelectionMode", new PathSelectionModeConstraintParser());
-        CONSTRAINT_PARSERS.put("fileExtensions", new PathFileExtensionConstraintParser());
     }
 }

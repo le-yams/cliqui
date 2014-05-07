@@ -13,17 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mytdev.cliqui.reader;
-
-import com.mytdev.cliqui.cli.Constraint;
-import javax.json.JsonValue;
+package com.mytdev.cliqui.json;
 
 /**
  *
  * @author Yann D'Isanto
- * @param <C> the constraint
  */
-public interface ConstraintParser<C extends Constraint> {
+public interface JsonConstraintParserProvider {
 
-    C parse(JsonValue json) throws IllegalArgumentException;
+    /**
+     * @param constraintName the constraint name
+     * @return the parser for the given name constraint or null if none
+     */
+    JsonConstraintParser getParser(String constraintName);
 }

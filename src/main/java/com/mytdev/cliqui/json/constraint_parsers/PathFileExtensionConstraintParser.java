@@ -13,9 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mytdev.cliqui.reader;
+package com.mytdev.cliqui.json.constraint_parsers;
 
 import com.mytdev.cliqui.cli.constraints.PathFileExtensionConstraint;
+import com.mytdev.cliqui.json.JsonConstraintParser;
 import java.util.ArrayList;
 import java.util.List;
 import javax.json.JsonArray;
@@ -28,7 +29,7 @@ import javax.json.JsonValue.ValueType;
  *
  * @author Yann D'Isanto
  */
-public final class PathFileExtensionConstraintParser implements ConstraintParser<PathFileExtensionConstraint> {
+public final class PathFileExtensionConstraintParser implements JsonConstraintParser<PathFileExtensionConstraint> {
 
     @Override
     public PathFileExtensionConstraint parse(JsonValue json) throws IllegalArgumentException {

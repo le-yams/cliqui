@@ -13,11 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mytdev.cliqui.reader;
+package com.mytdev.cliqui.json.constraint_parsers;
 
-import com.mytdev.cliqui.cli.constraints.PathSelectionMode;
-import com.mytdev.cliqui.cli.constraints.PathSelectionModeConstraint;
-import javax.json.JsonString;
+import com.mytdev.cliqui.cli.constraints.PathExistsConstraint;
+import com.mytdev.cliqui.json.JsonConstraintParser;
 import javax.json.JsonValue;
 import javax.json.JsonValue.ValueType;
 
@@ -25,17 +24,18 @@ import javax.json.JsonValue.ValueType;
  *
  * @author Yann D'Isanto
  */
-public final class PathSelectionModeConstraintParser implements ConstraintParser<PathSelectionModeConstraint> {
+public final class PathExistsConstraintParser implements JsonConstraintParser<PathExistsConstraint> {
 
     @Override
-    public PathSelectionModeConstraint parse(JsonValue json) {
+    public PathExistsConstraint parse(JsonValue json) {
         final ValueType valueType = json.getValueType();
-        if(valueType != ValueType.STRING) {
-            throw new IllegalArgumentException("invalid path selection value");
+        switch (valueType) {
+            case TRUE:
+                return new PathExistsConstraint(true);
+            case FALSE:
+                return new PathExistsConstraint(false);
+            default:
+                throw new IllegalArgumentException("invalid path must exist value, true or false is expected");
         }
-        final String value = ((JsonString) json).getString().toUpperCase();
-        final PathSelectionMode mode = PathSelectionMode.valueOf(value);
-        return new PathSelectionModeConstraint(mode);
     }
-
 }
