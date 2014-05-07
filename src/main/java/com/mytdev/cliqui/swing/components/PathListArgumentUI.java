@@ -24,6 +24,7 @@ import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.EnumMap;
 import java.util.Map;
 import javax.swing.JFileChooser;
@@ -45,7 +46,18 @@ public final class PathListArgumentUI extends AbstractListArgumentUI<Path> {
     protected final JFileChooser fileChooser;
 
     public PathListArgumentUI(Argument commandLineElement) {
-        super(commandLineElement);
+        super(commandLineElement, new StringConverter<Path>() {
+
+            @Override
+            public String format(Path path) {
+                return path.toString();
+            }
+
+            @Override
+            public Path parse(String string) {
+                return Paths.get(string);
+            }
+        });
         
         final PathExistsConstraint pathExistsConstraint = commandLineElement
                 .getConstraint(PathExistsConstraint.class);

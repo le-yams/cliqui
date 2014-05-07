@@ -27,7 +27,7 @@ import javax.swing.JOptionPane;
 public final class TextListArgumentUI extends AbstractListArgumentUI<String> {
 
     public TextListArgumentUI(Argument commandLineElement) {
-        super(commandLineElement);
+        super(commandLineElement, new StringConverter.Default());
     }
 
     @Override

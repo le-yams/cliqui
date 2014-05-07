@@ -45,10 +45,9 @@ public abstract class AbstractListArgumentUI<T> extends AbstractSwingCommandLine
 
     private final StringConverter<T> stringConverter;
 
-    public AbstractListArgumentUI(Argument commandLineElement) {
-        this(commandLineElement, new DefaultStringConverter<T>());
-    }
-
+//    public AbstractListArgumentUI(Argument commandLineElement) {
+//        this(commandLineElement, new DefaultStringConverter<T>());
+//    }
     public AbstractListArgumentUI(Argument commandLineElement, StringConverter<T> stringConverter) {
         super(commandLineElement);
         this.stringConverter = stringConverter;
@@ -129,7 +128,6 @@ public abstract class AbstractListArgumentUI<T> extends AbstractSwingCommandLine
 
     protected abstract void addButtonActionPerformed(ActionEvent e);
 
-    
     @Override
     public void validate() throws IllegalArgumentException {
         final CommandLineElement cle = getCommandLineElement();
@@ -143,9 +141,17 @@ public abstract class AbstractListArgumentUI<T> extends AbstractSwingCommandLine
         final List<String> cli = new ArrayList<>();
         final Enumeration<T> paths = listModel.elements();
         while (paths.hasMoreElements()) {
-            cli.add(stringConverter.convert(paths.nextElement()));
+            cli.add(stringConverter.format(paths.nextElement()));
         }
         return cli;
+    }
+
+    @Override
+    public void setCommandLineElementValue(String value) {
+        listModel.clear();
+        for (String string : value.split("\n")) {
+            listModel.addElement(stringConverter.parse(string));
+        }
     }
 
     @Override
@@ -165,15 +171,22 @@ public abstract class AbstractListArgumentUI<T> extends AbstractSwingCommandLine
 
     public static interface StringConverter<T> {
 
-        String convert(T item);
-    }
+        java.lang.String format(T item);
 
-    private static final class DefaultStringConverter<T> implements StringConverter<T> {
+        T parse(java.lang.String string);
 
-        @Override
-        public String convert(T item) {
-            return String.valueOf(item);
+        final class Default implements StringConverter<String> {
+
+            @Override
+            public String format(String item) {
+                return item;
+            }
+
+            @Override
+            public String parse(String string) {
+                return string;
+            }
+
         }
-
     }
 }

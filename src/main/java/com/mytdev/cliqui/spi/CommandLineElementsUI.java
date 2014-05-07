@@ -18,6 +18,7 @@ package com.mytdev.cliqui.spi;
 import com.mytdev.cliqui.cli.CommandLineElement;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The UI for command line elements.
@@ -33,17 +34,29 @@ public interface CommandLineElementsUI<T extends CommandLineElement, P> {
      */
     Collection<T> getCommandLineElements();
 
+    CommandLineElementUI<T, ?> getCommandLineElementUI(T element);
+    
+    CommandLineElementUI<T, ?> getCommandLineElementUI(String elementName);
+
     /**
      * @return the command line value from this UI
      */
     List<String> getCommandLineValue();
 
     /**
+     * Sets this UI element values.
+     *
+     * @param values a map with element names as key associated with the element
+     * values
+     */
+    void setCommandLineElementValues(Map<String, String> values);
+
+    /**
      * Validates the element UIs.
      *
      * @throws IllegalArgumentException if missing required input or if
      * constraint violation
-     * @see CommandLineElementUI#validate() 
+     * @see CommandLineElementUI#validate()
      */
     void validate() throws IllegalArgumentException;
 
@@ -51,7 +64,7 @@ public interface CommandLineElementsUI<T extends CommandLineElement, P> {
      * @return this UI change support.
      */
     ChangeSupport<?> getChangeSupport();
-    
+
     /**
      * @return this UI panel
      */

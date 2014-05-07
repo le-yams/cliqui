@@ -36,7 +36,7 @@ public final class IntegerListArgumentUI extends AbstractListArgumentUI<String> 
 
     @SuppressWarnings("unchecked")
     public IntegerListArgumentUI(Argument commandLineElement) {
-        super(commandLineElement);
+        super(commandLineElement, new StringConverter.Default());
         final IntMinConstraint minConstraint = commandLineElement.getConstraint(IntMinConstraint.class);
         final IntMaxConstraint maxConstraint = commandLineElement.getConstraint(IntMaxConstraint.class);
         documentFilter = IntegerDocumentFilter.create(minConstraint, maxConstraint);

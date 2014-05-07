@@ -75,6 +75,11 @@ public abstract class AbstractTextUI<T extends CommandLineElement> extends Abstr
     }
 
     @Override
+    public void setCommandLineElementValue(String value) {
+        field.setText(value);
+    }
+    
+    @Override
     public final JComponent getLabelComponent() {
         return label;
     }

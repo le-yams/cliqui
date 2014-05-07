@@ -22,6 +22,7 @@ import com.mytdev.cliqui.spi.CommandLineElementUIFactoryProvider;
 import java.awt.Component;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import javax.swing.GroupLayout;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
@@ -59,6 +60,13 @@ public final class SwingCommandLineElementsUI<T extends CommandLineElement> exte
         }
     }
 
+
+    @Override
+    public void setCommandLineElementValues(Map<String, String> values) {
+//        getCommandLineElements()
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
     @Override
     public SwingChangeSupport getChangeSupport() {
         return changeSupport;
@@ -71,7 +79,7 @@ public final class SwingCommandLineElementsUI<T extends CommandLineElement> exte
 
     
     private void initPanel() {
-        if(commandLineElements.isEmpty()) {
+        if(getCommandLineElements().isEmpty()) {
             return;
         }
         final GroupLayout layout = new GroupLayout(panel);
@@ -80,7 +88,7 @@ public final class SwingCommandLineElementsUI<T extends CommandLineElement> exte
         final GroupLayout.ParallelGroup hGroup = layout.createParallelGroup(GroupLayout.Alignment.LEADING);
         final List<Component> labels = new ArrayList<>();
         GroupLayout.ParallelGroup noLabelFieldsGroup = null;
-        for (T commandLineElement : commandLineElements) {
+        for (T commandLineElement : getCommandLineElements()) {
             final CommandLineElementUI<T, JComponent> paramUI = (CommandLineElementUI<T, JComponent>) uis.get(commandLineElement);
             ((SwingChangeSupport) paramUI.getChangeSupport()).addListener(this);
             final Component label = paramUI.getLabelComponent();
@@ -112,7 +120,7 @@ public final class SwingCommandLineElementsUI<T extends CommandLineElement> exte
             layout.linkSize(SwingConstants.HORIZONTAL, labels.toArray(new Component[labels.size()]));
         }
         final GroupLayout.SequentialGroup vGroup = layout.createSequentialGroup();
-        for (T commandLineElement : commandLineElements) {
+        for (T commandLineElement : getCommandLineElements()) {
             final CommandLineElementUI<T, JComponent> paramUI = (CommandLineElementUI<T, JComponent>) uis.get(commandLineElement);
             final Component label = paramUI.getLabelComponent();
             final Component field = paramUI.getFieldComponent();

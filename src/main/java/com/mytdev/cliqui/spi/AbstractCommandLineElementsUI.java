@@ -33,20 +33,26 @@ public abstract class AbstractCommandLineElementsUI<T extends CommandLineElement
 
     private final CommandLineElementUIFactoryProvider<T, ?> factoryProvider;
 
-    protected final List<T> commandLineElements;
+    private final List<T> commandLineElements;
 
     protected final Map<T, CommandLineElementUI<T, ?>> uis;
+    
+    protected final Map<String, CommandLineElementUI<T, ?>> uisByName;
 
     public AbstractCommandLineElementsUI(CommandLineElementUIFactoryProvider<T, ?> factoryProvider, List<T> commandLineElements) {
         this.factoryProvider = factoryProvider;
         this.commandLineElements = Collections.unmodifiableList(commandLineElements);
         final Map<T, CommandLineElementUI<T, ?>> uisMap = new HashMap<>(commandLineElements.size());
+        final Map<String, CommandLineElementUI<T, ?>> uisByNameMap = new HashMap<>(commandLineElements.size());
         for (T commandLineElement : commandLineElements) {
             if (commandLineElement != null) {
-                uisMap.put(commandLineElement, buildCommandLineElementUI(commandLineElement));
+                final CommandLineElementUI<T, ?> ui = buildCommandLineElementUI(commandLineElement);
+                uisMap.put(commandLineElement, ui);
+                uisByNameMap.put(commandLineElement.getName(), ui);
             }
         }
         uis = Collections.unmodifiableMap(uisMap);
+        uisByName = Collections.unmodifiableMap(uisByNameMap);
     }
 
     @Override
@@ -61,6 +67,14 @@ public abstract class AbstractCommandLineElementsUI<T extends CommandLineElement
     @Override
     public final Collection<T> getCommandLineElements() {
         return commandLineElements;
+    }
+
+    public final CommandLineElementUI<T, ?> getCommandLineElementUI(T element) {
+        return uis.get(element);
+    }
+
+    public final CommandLineElementUI<T, ?> getCommandLineElementUI(String elementName) {
+        return uisByName.get(elementName);
     }
 
     /**

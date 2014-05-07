@@ -50,6 +50,12 @@ public interface CommandLineElementUI<T extends CommandLineElement, C> {
     List<String> getCommandLineValue();
 
     /**
+     * Sets this UI element value.
+     * @param value 
+     */
+    void setCommandLineElementValue(String value);
+    
+    /**
      * Returns the component to be placed on the left with no horizontal fill.
      *
      * @return the label component instance or null if none.

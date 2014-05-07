@@ -109,4 +109,9 @@ public final class PasswordOptionUI<T extends CommandLineElement> extends Abstra
     public JComponent getFieldSuffixComponent() {
         return displayPasswordCheckBox;
     }
+
+    @Override
+    public void setCommandLineElementValue(String value) {
+        field.setText(value);
+    }
 }

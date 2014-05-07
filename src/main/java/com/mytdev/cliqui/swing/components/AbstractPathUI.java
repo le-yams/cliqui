@@ -115,6 +115,11 @@ public abstract class AbstractPathUI<T extends CommandLineElement> extends Abstr
     }
 
     @Override
+    public void setCommandLineElementValue(String value) {
+        field.setText(value);
+    }
+    
+    @Override
     public void validate() throws IllegalArgumentException {
         final CommandLineElement cle = getCommandLineElement();
         if (cle.isRequired() && field.getText().isEmpty()) {

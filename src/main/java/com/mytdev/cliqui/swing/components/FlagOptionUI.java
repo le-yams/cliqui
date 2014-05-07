@@ -73,4 +73,9 @@ public final class FlagOptionUI <T extends CommandLineElement> extends AbstractS
     public JComponent getFieldSuffixComponent() {
         return null;
     }
+
+    @Override
+    public void setCommandLineElementValue(String value) {
+        checkBox.setSelected(Boolean.parseBoolean(value));
+    }
 }
