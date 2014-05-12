@@ -63,8 +63,12 @@ public final class SwingCommandLineElementsUI<T extends CommandLineElement> exte
 
     @Override
     public void setCommandLineElementValues(Map<String, String> values) {
-//        getCommandLineElements()
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        for (Map.Entry<String, String> entry : values.entrySet()) {
+            final CommandLineElementUI<T, ?> ui = uisByName.get(entry.getKey());
+            if(ui != null) {
+                ui.setCommandLineElementValue(entry.getValue());
+            }
+        }
     }
     
     @Override
